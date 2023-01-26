@@ -6,7 +6,7 @@
 #    By: ben <ben@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:09:33 by ben               #+#    #+#              #
-#    Updated: 2022/11/24 16:30:36 by ben              ###   ########.fr        #
+#    Updated: 2023/01/26 12:58:23 by ben              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,17 +29,22 @@ test: $(NAME)
 
 $(NAME): $(OBJS)
 		${CC} ${CFLAGS} main.cpp -o $(NAME)
+		# ${CC} ${CFLAGS} main.cpp -o std_test
 		${CC} ${CFLAGS} main.cpp -o std_test -D STD
-		./ft_test > ft_test_file && ./std_test > std_test_file
-		diff -y ./ft_test_file ./std_test_file
+		# ./ft_test > ft_test_file && ./std_test > std_test_file
+		# diff -y ./ft_test_file ./std_test_file
 
 performance:
 		${CC} ${CFLAGS} intra_main_ft.cpp -o ftcontainer
 		${CC} ${CFLAGS} intra_main_std.cpp -o stdcontainer
 		@echo "$(GREEN)FT times:$(RESET)"
-		@time ./ftcontainer 42
+		@time -p ./ftcontainer 42
 		@echo "$(GREEN)STD times:$(RESET)"
-		@time ./stdcontainer 42
+		@time -p ./stdcontainer 42
+
+difference:
+		./ft_test > ft_test_file && ./std_test > std_test_file
+		diff -y ./ft_test_file ./std_test_file
 
 clean:
 		${RM} $(OBJS) ft_test ft_test_file std_test std_test_file ftcontainer stdcontainer
@@ -49,6 +54,6 @@ fclean: clean
 		${RM} ${NAME}
 		@echo "$(RED)fcleaned$(RESET)"
 
-re:		fclean test performance
+re:		fclean test performance difference
 
 .PHONY:	test performance

@@ -6,7 +6,7 @@
 /*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2022/11/24 16:32:24 by ben              ###   ########.fr       */
+/*   Updated: 2023/01/13 10:05:09 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ namespace ft
 
 		private:
 
-			size_type				_size;
-			allocator_type			_alloc;
-			std::allocator<node>	_node_alloc;
+			size_type														_size;
+			allocator_type													_alloc;
+			typedef typename allocator_type::template rebind<node>::other	Node;
+			Node															_node_alloc;
 
 		public:
 
