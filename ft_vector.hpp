@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_vector.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/01/12 11:59:16 by ben              ###   ########.fr       */
+/*   Updated: 2023/01/28 07:38:02 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ namespace ft
 	public:
 
 		/* Default constructor */
-		explicit vector(const allocator_type &alloc = allocator_type())
+		explicit vector(const allocator_type &alloc = allocator_type())																								//*Checked
 			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0) {}
 
 		/* Fill constructor */
-		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
+		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())											//*Checked
 			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0)
 		{
 			_container = _alloc.allocate(n);
@@ -69,7 +69,7 @@ namespace ft
 		/* Range constructor */
 		/* enable_if is needed because range constructor is a better match then fill constructor (for example two numbers)*/
 		template<class InputIterator>
-		vector(InputIterator first, InputIterator last, \
+		vector(InputIterator first, InputIterator last,																											//*Checked
 				const allocator_type &alloc = allocator_type(),
 				typename enable_if<!is_integral<InputIterator>::value>::type* = NULL) : _alloc(alloc)
 		{
@@ -86,7 +86,7 @@ namespace ft
 		}
 
 		/* Copy Constructor */
-		vector(const vector &x) : _alloc(x._alloc), _container(NULL), _end(NULL), _capacity(0)
+		vector(const vector &x) : _alloc(x._alloc), _container(NULL), _end(NULL), _capacity(0)																	//*Checked
 		{
 			this->insert(this->begin(), x.begin(), x.end());
 		}
@@ -99,7 +99,7 @@ namespace ft
 		}
 
 		/* Assignment operator */
-		vector &operator=(const vector &x)
+		vector &operator=(const vector &x)																														//*Checked
 		{
 			if (x == *this)
 				return (*this);
@@ -109,7 +109,7 @@ namespace ft
 		}
 
 		/* returns iterator of first element */
-		iterator begin(void)
+		iterator begin(void)																											//*Checked
 		{
 			return (iterator(this->_container));
 		}
@@ -120,7 +120,7 @@ namespace ft
 			return (const_iterator(this->_container));
 		}
 
-		iterator end(void)
+		iterator end(void)																		//*Checked
 		{
 			if (this->empty())
 				return (this->begin());
@@ -134,7 +134,7 @@ namespace ft
 			return (const_iterator(this->_end));
 		}
 
-		reverse_iterator rbegin(void)
+		reverse_iterator rbegin(void)											//*Checked
 		{
 			return (reverse_iterator(this->_end));
 		}
@@ -144,7 +144,7 @@ namespace ft
 			return (reverse_iterator(this->_end));
 		}
 
-		reverse_iterator rend(void)
+		reverse_iterator rend(void)											//*Checked
 		{
 			return (reverse_iterator(this->_container));
 		}
@@ -154,17 +154,17 @@ namespace ft
 			return (reverse_iterator(this->_container));
 		}
 
-		size_type size(void) const
+		size_type size(void) const											//*Checked
 		{
 			return (this->_end - this->_container);
 		}
 
-		size_type max_size(void) const
+		size_type max_size(void) const											//*Checked
 		{
 			return (allocator_type().max_size());
 		}
 
-		void resize(size_type n, value_type val = value_type())
+		void resize(size_type n, value_type val = value_type())											//*Checked
 		{
 			if (n > this->max_size())
 				throw std::length_error("vector::resize");
@@ -181,19 +181,19 @@ namespace ft
 		}
 
 		/* returns the capacity of the container */
-		size_type capacity(void) const
+		size_type capacity(void) const											//*Checked
 		{
 			return (this->_capacity);
 		}
 
-		bool empty(void) const
+		bool empty(void) const											//*Checked
 		{
 			if (this->size() == 0)
 				return (true);
 			return (false);
 		}
 
-		void reserve(size_type n)
+		void reserve(size_type n)											//*Checked
 		{
 			if (n > this->max_size())
 				throw std::length_error("vector::reserve");
@@ -217,7 +217,7 @@ namespace ft
 			}
 		}
 
-		reference operator[](size_type n)
+		reference operator[](size_type n)											//*Checked
 		{
 			return (*(this->_container + n));
 		}
@@ -229,7 +229,7 @@ namespace ft
 
 		/* Returns a reference to the element at position n in the vector 	*/
 		/* https://cplusplus.com/reference/vector/vector/at/				*/
-		reference at(size_type n)
+		reference at(size_type n)											//*Checked
 		{
 			if (n >= this->size())
 				throw std::out_of_range("Out of Range");
@@ -244,7 +244,7 @@ namespace ft
 			return ((*this)[n]);
 		}
 
-		reference front(void)
+		reference front(void)											//*Checked
 		{
 			return (*this->_container);
 		}
@@ -255,7 +255,7 @@ namespace ft
 		}
 
 		/* reference to last element in array */
-		reference back(void)
+		reference back(void)											//*Checked
 		{
 			return (*(this->_end - 1));
 		}
@@ -269,7 +269,7 @@ namespace ft
 		/* Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly. 	*/
 		/* https://cplusplus.com/reference/vector/vector/assign/ 													*/
 		template<class InputIterator>
-		void assign(InputIterator first, InputIterator last,
+		void assign(InputIterator first, InputIterator last,											//*Checked
 					typename enable_if<!is_integral<InputIterator>::value>::type* = NULL)
 		{
 			this->clear();
@@ -302,7 +302,7 @@ namespace ft
 		}
 
 		/* Fill Assign */
-		void assign(size_type n, const value_type &val)
+		void assign(size_type n, const value_type &val)											//*Checked
 		{
 			this->clear();
 			if (n == 0)
@@ -331,7 +331,7 @@ namespace ft
 			}
 		}
 
-		void push_back(const value_type &val)
+		void push_back(const value_type &val)											//*Checked
 		{
 			if (this->size() == this->_capacity)
 			{
@@ -346,13 +346,13 @@ namespace ft
 			this->_end++;
 		}
 
-		void pop_back(void)
+		void pop_back(void)											//*Checked
 		{
 			this->_alloc.destroy(&(this->back()));
 			this->_end--;
 		}
 
-		iterator insert(iterator position, const value_type &val)
+		iterator insert(iterator position, const value_type &val)											//*Checked
 		{
 			size_type pos = &(*position) - this->_container;
 			if (this->_capacity - size() >= this->size() + 1)
@@ -389,7 +389,7 @@ namespace ft
 			return (iterator(this->_container + pos));
 		}
 
-		void insert(iterator position, size_type n, const value_type &val)
+		void insert(iterator position, size_type n, const value_type &val)											//*Checked
 		{
 			if (n == 0)
 				return ;
@@ -440,7 +440,7 @@ namespace ft
 		}
 
 		template<class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last,
+		void insert(iterator position, InputIterator first, InputIterator last,				//! Fail Capacity wird nicht angepasst
 					typename enable_if<!is_integral<InputIterator>::value>::type* = NULL)
 		{
 			size_type n = ft::distance(first, last);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:33:21 by ben               #+#    #+#             */
-/*   Updated: 2023/01/26 12:06:40 by ben              ###   ########.fr       */
+/*   Updated: 2023/01/28 07:39:20 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,14 +190,19 @@ int main(void)
 		vec.push_back("Adeyemi");
 		vec.insert(vec.begin() + 5, "Inserttest");
 		std::cout << "Creating vector, pushing some elements and\niterating with iterator" << std::endl;
+		ft::vector<std::string>::iterator iter = vec.begin();
+		for (; iter != vec.end(); iter++)
+			std::cout << " - " << *iter << std::endl;
+		std::cout << "Vector.front = "<< vec.front() << std::endl;
+		std::cout << "Vector.back = "<< vec.back() << std::endl;
+		std::cout << "Vector at" << std::endl;
+		for (size_t i = 0; i < vec.size(); i++)
+			std::cout << "vector.at(" << i <<") = " << vec.at(i) << std::endl;
 		ft::vector<std::string>::iterator it = vec.begin();
-		for (; it != vec.end(); it++)
-			std::cout << " - " << *it << std::endl;
-		std::cout << "Iterating again but this time with const iterator" << std::endl;
-		// std::cout << "Printing third element using begin + 2" << std::endl;
-		// std::cout << " - " << *(it + 2) << std::endl;
-		// std::cout << "Printing third element using operator[]" << std::endl;
-		// std::cout << " - " << it[2] << std::endl;
+		std::cout << "Printing third element using begin + 2" << std::endl;
+		std::cout << " - " << *(it + 2) << std::endl;
+		std::cout << "Printing third element using operator[]" << std::endl;
+		std::cout << " - " << it[2] << std::endl;
 		std::cout << "Iterating with reverse_iterators" << std::endl;
 		ft::vector<std::string>::reverse_iterator rit = vec.rbegin();
 		for (; rit != vec.rend(); rit++)
@@ -210,9 +215,29 @@ int main(void)
 		std::cout << "Vector max_size" << std::endl;
 		std::cout << " - " << vec.max_size() << std::endl;
 		std::cout << "Vector after pushing 3 new objects" << std::endl;
+		std::cout << "clear Vector" << std::endl;
+		vec.clear();
+		ft::vector<std::string> vec_test(5,"test_Container");
+		vec.insert(vec.end(), 5, "Insert_value");
+		std::cout << "fill insert OK" << std::endl;
+		std::cout << "Vector size" << std::endl;
+		std::cout << " - " << vec.size() << std::endl;
+		std::cout << "Vector capacity" << std::endl;
+		std::cout << " - " << vec.capacity() << std::endl;
+		vec.insert(vec.end(), vec_test.begin(), vec_test.end());
+		std::cout << "Range insert OK" << std::endl;
+		std::cout << "Vector size" << std::endl;
+		std::cout << " - " << vec.size() << std::endl;
+		std::cout << "Vector capacity" << std::endl;
+		std::cout << " - " << vec.capacity() << std::endl;
+		std::cout << "Es folgt Push_Back" << std::endl;
 		vec.push_back("Pogba");
 		vec.push_back("Matuidi");
 		vec.push_back("Griezmann");
+		std::cout << "Vector size" << std::endl;
+		std::cout << " - " << vec.size() << std::endl;
+		std::cout << "Vector capacity" << std::endl;
+		std::cout << " - " << vec.capacity() << std::endl;
 		it = vec.begin();
 		for (; it != vec.end(); it++)
 			std::cout << " - " << *it << std::endl;
@@ -268,7 +293,12 @@ int main(void)
 		std::cout << " - " << vec.max_size() << std::endl;
 		ft::vector<std::string> v(8, "42");
 		vec.assign(v.begin(), v.end());
-		std::cout << "Vector after using assign to change contents" << std::endl;
+		std::cout << "Vector after using assign (iter) to change contents" << std::endl;
+		it = vec.begin();
+		for (; it != vec.end(); it++)
+			std::cout << " - " << *it << std::endl;
+		std::cout << "Vector after using assign (fill) to change contents" << std::endl;
+		vec.assign(15, "Test");
 		it = vec.begin();
 		for (; it != vec.end(); it++)
 			std::cout << " - " << *it << std::endl;
