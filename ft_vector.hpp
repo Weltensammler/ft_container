@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/01/28 07:38:02 by tguth            ###   ########.fr       */
+/*   Updated: 2023/01/30 06:07:12 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ namespace ft
 
 		/* Returns a reference to the element at position n in the vector 	*/
 		/* https://cplusplus.com/reference/vector/vector/at/				*/
-		reference at(size_type n)											//*Checked
+		reference at(size_type n)													//*Checked
 		{
 			if (n >= this->size())
 				throw std::out_of_range("Out of Range");
@@ -346,7 +346,7 @@ namespace ft
 			this->_end++;
 		}
 
-		void pop_back(void)											//*Checked
+		void pop_back(void)																	//*Checked
 		{
 			this->_alloc.destroy(&(this->back()));
 			this->_end--;
@@ -396,7 +396,7 @@ namespace ft
 			if (n > this->max_size())
 				throw std::length_error("vector::insert");
 			size_type pos = &(*position) - this->_container;
-			if (this->_capacity >= n)
+			if (this->_capacity >= n + size())
 			{
 				for (size_type i = 0; i < this->size() - pos; i++)
 					this->_alloc.construct(this->_end - i + (n - 1), *(this->_end - i - 1));
@@ -413,7 +413,7 @@ namespace ft
 				if (this->size() == 0)
 					new_capacity = 0;
 				else
-					new_capacity = this->capacity() * 2;
+					new_capacity = size() + n;
 				pointer new_start = this->_alloc.allocate(new_capacity);
 				pointer new_end = pointer();
 				if (new_capacity < this->size() + n)
@@ -440,11 +440,11 @@ namespace ft
 		}
 
 		template<class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last,				//! Fail Capacity wird nicht angepasst
+		void insert(iterator position, InputIterator first, InputIterator last,											//*Checked
 					typename enable_if<!is_integral<InputIterator>::value>::type* = NULL)
 		{
 			size_type n = ft::distance(first, last);
-			if (this->_capacity >= n)
+			if (this->_capacity >= n + size())
 			{
 				for (size_type i = 0; i < (this->size() - (&(*position) - this->_container)); i++)
 					this->_alloc.construct(this->_end - i + n - 1, *(this->_end - i - 1));
@@ -458,23 +458,18 @@ namespace ft
 			}
 			else
 			{
-				pointer new_start = this->_alloc.allocate(this->capacity() * 2);
+				pointer new_start = this->_alloc.allocate(this->size() + n);
 				pointer new_end = new_start + this->size() + n;
-				size_type new_capacity =this->capacity() * 2;
-				if (new_capacity < this->size() + n)
-				{
-					if (new_start)
-						this->_alloc.deallocate(new_start, new_capacity);
-					new_start = this->_alloc.allocate(this->size() + n);
-					new_end = new_start + this->size() + n;
-					new_capacity = new_end - new_start;
-				}
+				size_type new_capacity = this->size() + n;
 				for (int i = 0; i < &(*position) - this->_container; i++)
 					this->_alloc.construct(new_start + i, *(this->_container + i));
+					
 				for (int j = 0; first != last; first++, j++)
 					this->_alloc.construct(new_start + (&(*position) - this->_container) + j, *first);
+					
 				for (size_type k = 0; k < this->size() - (&(*position) - this->_container); k++)
 					this->_alloc.construct(new_start + (&(*position) - this->_container) + n + k, *(&(*position) + k));
+					
 				for (size_type l = 0; l < this->size(); l++)
 					this->_alloc.destroy(this->_container + l);
 				this->_alloc.deallocate(this->_container, this->capacity());
@@ -484,7 +479,7 @@ namespace ft
 			}
 		}
 
-		iterator erase(iterator position)
+		iterator erase(iterator position)											
 		{
 			pointer pos = &(*position);
 			this->_alloc.destroy(pos);
