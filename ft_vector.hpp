@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_vector.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/01/30 06:07:12 by tguth            ###   ########.fr       */
+/*   Updated: 2023/01/30 17:20:55 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ namespace ft
 		typedef typename allocator_type::const_pointer				const_pointer;
 		typedef typename allocator_type::reference					reference;
 		typedef typename allocator_type::const_reference			const_reference;
-		typedef typename ft::vector_Iterator<T>						iterator;
-		typedef typename ft::vector_Iterator<const T>				const_iterator;
+		typedef typename ft::vector_Iterator<T, false>				iterator;
+		typedef typename ft::vector_Iterator<T, true>				const_iterator;
 		typedef typename ft::reverse_Iterator<iterator>				reverse_iterator;
 		typedef typename ft::reverse_Iterator<const_iterator>		const_reverse_iterator;
 		typedef typename allocator_type::size_type					size_type;
@@ -79,7 +79,7 @@ namespace ft
 			this->_end = this->_container;
 			while (first != last)
 			{
-				_alloc.construct(&(this->_container +  this->_end), *first);
+				_alloc.construct(this->_end, *first);
 				first++;
 				this->_end++;
 			}
@@ -367,7 +367,7 @@ namespace ft
 				int new_capacity;
 				if (this->size() == 0)
 					new_capacity = 1;
-				else if (this->size() > this->capacity())
+				else if (this->size() >= this->capacity())
 					new_capacity = this->capacity() * 2;
 				else
 					new_capacity = capacity();
@@ -483,14 +483,16 @@ namespace ft
 		{
 			pointer pos = &(*position);
 			this->_alloc.destroy(pos);
-			if (&(*position) + 1 != this->_end)
+
+			if(position + 1 == end())
 			{
-				for (int i = 0; i < this->_end - (&(*position) - 1); i++)
-				{
-					this->_alloc.construct(&(*position) + i, (*(position + i + 1)));
-					this->_alloc.destroy(&(*position) + i + 1);
-				}
+				this->_end--;
+				return pos;
 			}
+			iterator it = position;
+			for (; it + 1 != end(); it++)
+				this->_alloc.construct(&(*it), (*(it + 1)));
+			this->_alloc.destroy(&(*it));
 			this->_end--;
 			return (iterator(pos));
 		}

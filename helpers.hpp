@@ -6,7 +6,7 @@
 /*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:53 by ben               #+#    #+#             */
-/*   Updated: 2023/01/26 11:46:13 by ben              ###   ########.fr       */
+/*   Updated: 2023/01/30 17:37:41 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,34 @@
 
 namespace ft
 {
+	template <bool flag, class IsTrueType, class IsFalseType>
+	struct choose;
 
-	template<	typename Category,
-				typename T,
-				typename Distance = std::ptrdiff_t,
-				typename Pointer = T*,
-				typename Reference = T&>
+	template <class IsTrueType, class IsFalseType>
+	struct choose<true, IsTrueType, IsFalseType>
+	{
+		typedef IsTrueType type;
+	};
+
+	template <class IsTrueType, class IsFalseType>
+	struct choose<false, IsTrueType, IsFalseType>
+	{
+		typedef IsFalseType type;
+	};
+	
+	template<	typename	Category,
+				typename	T,
+				bool 		isConst,
+				typename	Distance = std::ptrdiff_t,
+				typename	Pointer = T*,
+				typename	Reference = T&>
 	class iterator
 	{
 		public:
 			typedef T			value_type;
 			typedef Distance	difference_type;
-			typedef Pointer		pointer;
-			typedef Reference	reference;
+			typedef typename 	choose<isConst, const T *, T *>::type	pointer;
+			typedef typename 	choose<isConst, const T &, T &>::type	reference;
 			typedef Category	iterator_category;
 	};
 
