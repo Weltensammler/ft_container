@@ -6,7 +6,7 @@
 /*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:53 by ben               #+#    #+#             */
-/*   Updated: 2023/01/30 17:37:41 by ben              ###   ########.fr       */
+/*   Updated: 2023/01/31 12:04:25 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ namespace ft
 
 		typedef ptrdiff_t					difference_type;
 		typedef T							value_type;
-		typedef T							*pointer;
-		typedef T							&reference;
+		typedef T*							pointer;
+		typedef T&							reference;
 		typedef random_access_iterator_tag	iterator_category;
 	};
 
@@ -84,8 +84,8 @@ namespace ft
 
 		typedef ptrdiff_t					difference_type;
 		typedef T							value_type;
-		typedef T							*pointer;
-		typedef T							&reference;
+		typedef const T*					pointer;
+		typedef const T&					reference;
 		typedef random_access_iterator_tag	iterator_category;
 	};
 

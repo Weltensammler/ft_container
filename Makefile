@@ -6,7 +6,7 @@
 #    By: ben <ben@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:09:33 by ben               #+#    #+#              #
-#    Updated: 2023/01/30 16:52:00 by ben              ###   ########.fr        #
+#    Updated: 2023/01/31 11:42:58 by ben              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,9 @@ RESET			=	\033[0m
 test: $(NAME)
 
 $(NAME): $(OBJS)
-		${CC} ${CFLAGS} test_main.cpp -o $(NAME)
+		${CC} ${CFLAGS} main.cpp -o $(NAME)
 		# ${CC} ${CFLAGS} main.cpp -o std_test
-		# ${CC} ${CFLAGS} main.cpp -o std_test -D STD
+		${CC} ${CFLAGS} main.cpp -o std_test -D STD
 		# ./ft_test > ft_test_file && ./std_test > std_test_file
 		# diff -y ./ft_test_file ./std_test_file
 
