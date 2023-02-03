@@ -6,7 +6,7 @@
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/03 12:43:23 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:32:15 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ namespace ft
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef	typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef BST_iter<Key, T>							iterator;
+			typedef const BST_iter<Key, T>						const_iterator;
+			typedef reverse_BST_iter<Key, T>					reverse_iterator;
+			typedef const reverse_BST_iter<Key, T>				const_reverse_iterator;
 
 			struct node
 			{

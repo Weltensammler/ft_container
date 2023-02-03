@@ -6,7 +6,7 @@
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/03 12:43:18 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:34:48 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,37 @@ namespace ft
 	template<	typename Key,
 				typename T,
 				typename Compare = std::less<Key>,
-				typename Allocator = std::allocator<ft::pair<const Key, T> > >
+				typename Allocator = std::allocator<pair<const Key, T> > >
 	class map
 	{
 		public:
 
-			typedef Key											key_type;
-			typedef T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type;
-			typedef std::size_t									size_type;
-			typedef std::ptrdiff_t								difference_type;
-			typedef Compare										key_compare;
-			typedef Allocator									allocator_type;
-			typedef value_type&									reference;
-			typedef const value_type&							const_reference;
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef ft::BST_iter<Key, T>						iterator;
-			typedef const ft::BST_iter<Key, T>					const_iterator;
-			typedef ft::reverse_BST_iter<Key, T>				reverse_iterator;
-			typedef const ft::reverse_BST_iter<Key, T>			const_reverse_iterator;
+			typedef Key																					key_type;
+			typedef T																					mapped_type;
+			typedef ft::pair<const key_type, mapped_type>												value_type;
+			typedef std::size_t																			size_type;
+			typedef std::ptrdiff_t																		difference_type;
+			typedef Compare																				key_compare;
+			typedef Allocator																			allocator_type;
+			typedef value_type&																			reference;
+			typedef const value_type&																	const_reference;
+			typedef typename allocator_type::pointer													pointer;
+			typedef typename allocator_type::const_pointer												const_pointer;
+			typedef BST<Key, T, key_compare, allocator_type>::iterator									iterator;
+			typedef const BST<Key, T, key_compare, allocator_type>::const_iterator						const_iterator;
+			typedef BST<Key, T, key_compare, allocator_type>::reverse_iterator							reverse_iterator;
+			typedef const BST<Key, T, key_compare, allocator_type>::const_reverse_iterator				const_reverse_iterator;
+
+			// typedef typename ft::tree<value_type, Compare, Allocator>::iterator					iterator;
+			// typedef typename ft::tree<value_type, Compare, Allocator>::const_iterator			const_iterator;
+			// typedef typename ft::tree<value_type, Compare, Allocator>::reverse_iterator			reverse_iterator;
+			// typedef typename ft::tree<value_type, Compare, Allocator>::const_reverse_iterator	const_reverse_iterator;
 
 		private:
 
-			BST<key_type, mapped_type>	_bst;
-			key_compare					_comp;
-			allocator_type				_alloc;
+			BST<key_type, mapped_type, key_compare, allocator_type>	_bst;
+			key_compare												_comp;
+			allocator_type											_alloc;
 
 		public:
 
@@ -81,12 +86,12 @@ namespace ft
 				this->clear();
 			}
 
-			map &operator=(const map &other)
+			map &operator=(const map &rhs)
 			{
-				if (*this == other)
+				if (*this == rhs)
 					return (*this);
 				clear();
-				_bst.copyTree(other._bst.getToRoot());
+				_bst.copyTree(rhs._bst.getToRoot());
 				return (*this);
 			}
 
@@ -200,7 +205,7 @@ namespace ft
 				_bst._clear(_bst.getRoot());
 			}
 
-			ft::pair<iterator, bool> insert(const value_type &value)
+			pair<iterator, bool> insert(const value_type &value)
 			{
 				iterator it(_bst._insert(value));
 				if (it != iterator())
@@ -227,7 +232,8 @@ namespace ft
 				return (iterator());
 			}
 
-			template< class InputIt > void insert(InputIt first, InputIt last)
+			template< class InputIt >
+			void insert(InputIt first, InputIt last)
 			{
 				for (; first != last; first++)
 					_bst._insert(*first);
@@ -235,7 +241,7 @@ namespace ft
 
 			void erase(iterator pos)
 			{
-				_bst._erase((*pos).first);
+				_bst._erase(pos->first);
 			}
 
 			void erase(iterator first, iterator last)
@@ -243,11 +249,11 @@ namespace ft
 				key_type key;
 				for (; first != last; first++)
 				{
-					key = (*first).first;
+					key = first->first;
 					erase(key);
 				}
 				first++;
-				key = (*first).first;
+				key = first->first;
 				erase(key);
 			}
 
@@ -292,12 +298,12 @@ namespace ft
 					return (const_iterator(end()));
 			}
 
-			ft::pair<iterator,iterator> equal_range(const key_type &key)
+			pair<iterator,iterator> equal_range(const key_type &key)
 			{
 				return (ft::make_pair(lower_bound(key), upper_bound(key)));
 			}
 
-			ft::pair<const_iterator,const_iterator> equal_range(const key_type &key) const
+			pair<const_iterator,const_iterator> equal_range(const key_type &key) const
 			{
 				return (ft::make_pair(lower_bound(key), upper_bound(key)));
 			}
@@ -385,15 +391,14 @@ namespace ft
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator>(const map<Key,T,Compare,Alloc> &lhs, const map<Key,T,Compare,Alloc> &rhs)
 	{
-		return (!(lhs < rhs));
+		return (!(lhs < rhs) && (lhs != rhs));
 	}
 
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator>=(const map<Key,T,Compare,Alloc> &lhs, const map<Key,T,Compare,Alloc> &rhs)
 	{
-		return (lhs > rhs);
+		return (lhs > rhs || rhs == lhs);
 	}
-
 }
 
 #endif

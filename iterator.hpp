@@ -18,42 +18,42 @@
 
 namespace ft
 {
-	struct input_iterator_tag			{};
-	struct output_iterator_tag			{};
-	struct forward_iterator_tag			: input_iterator_tag {};
-	struct bidirectional_iterator_tag	: forward_iterator_tag {};
-	struct random_access_iterator_tag	: bidirectional_iterator_tag {};
+	struct input_iterator_tag											{};
+	struct output_iterator_tag											{};
+	struct forward_iterator_tag			: input_iterator_tag			{};
+	struct bidirectional_iterator_tag	: forward_iterator_tag			{};
+	struct random_access_iterator_tag	: bidirectional_iterator_tag	{};
 	
 	template<class Iterator>
 	struct iterator_traits
 	{
 
-		typedef typename Iterator::difference_type		difference_type;
-		typedef typename Iterator::value_type			value_type;
-		typedef typename Iterator::pointer				pointer;
-		typedef typename Iterator::reference			reference;
-		typedef typename Iterator::iterator_category	iterator_category;
+		typedef typename Iterator::difference_type						difference_type;
+		typedef typename Iterator::value_type							value_type;
+		typedef typename Iterator::pointer								pointer;
+		typedef typename Iterator::reference							reference;
+		typedef typename Iterator::iterator_category					iterator_category;
 	};
 
 	template<typename T>
 	struct iterator_traits<T*>
 	{
 
-		typedef ptrdiff_t					difference_type;
-		typedef T							value_type;
-		typedef T*							pointer;
-		typedef T&							reference;
-		typedef random_access_iterator_tag	iterator_category;
+		typedef ptrdiff_t												difference_type;
+		typedef T														value_type;
+		typedef T*														pointer;
+		typedef T&														reference;
+		typedef random_access_iterator_tag								iterator_category;
 	};
 
 	template<typename T>
 	struct iterator_traits<const T*>
 	{
-		typedef ptrdiff_t						difference_type;
-		typedef T								value_type;
-		typedef const T*						pointer;
-		typedef const T&						reference;
-		typedef random_access_iterator_tag		iterator_category;
+		typedef ptrdiff_t												difference_type;
+		typedef T														value_type;
+		typedef const T*												pointer;
+		typedef const T&												reference;
+		typedef random_access_iterator_tag								iterator_category;
 	};
 
 	template< typename T>
@@ -66,7 +66,6 @@ namespace ft
 			typedef typename iterator_traits<T*>::pointer				pointer;
 			typedef typename iterator_traits<T*>::difference_type		difference_type;
 			typedef T													iterator_type;
-
 
 		private:
 			pointer 	_ptr;
@@ -121,13 +120,13 @@ namespace ft
 
 			Iterator operator-(const difference_type & n) const {return (_ptr - n);}
 
-			Iterator & operator+=(const difference_type & a) 
+			Iterator & operator+=(const difference_type & a)
 			{
 				_ptr += a;
 				return (*this);
 			}
 
-			Iterator & operator-=(const difference_type & a) 
+			Iterator & operator-=(const difference_type & a)
 			{
 				_ptr -= a;
 				return (*this);
@@ -317,8 +316,8 @@ namespace ft
 	}
 
 	template< class Iter1, class Iter2 >
-	bool operator<(	const reverse_Iterator<Iter1>& lhs,
-					const reverse_Iterator<Iter2>& rhs )
+	bool operator<(		const reverse_Iterator<Iter1>& lhs,
+						const reverse_Iterator<Iter2>& rhs )
 	{
 		return lhs.base() > rhs.base();
 	}
@@ -331,15 +330,15 @@ namespace ft
 	}
 
 	template< class Iter1, class Iter2 >
-	bool operator>(	const reverse_Iterator<Iter1>& lhs,
-					const reverse_Iterator<Iter2>& rhs )
+	bool operator>(		const reverse_Iterator<Iter1>& lhs,
+						const reverse_Iterator<Iter2>& rhs )
 	{
 		return lhs.base() < rhs.base();
 	}
 
 	template< class Iter1, class Iter2 >
-	bool operator>=(const reverse_Iterator<Iter1>& lhs,
-					const reverse_Iterator<Iter2>& rhs )
+	bool operator>=(	const reverse_Iterator<Iter1>& lhs,
+						const reverse_Iterator<Iter2>& rhs )
 	{
 		return lhs.base() <= rhs.base();
 	}
@@ -416,9 +415,9 @@ namespace ft
 	template <class T, T v>
 	struct integral_constant
 	{
-		static const T					value = v;
-		typedef T						valueType;
-		typedef integral_constant<T, v>	type;
+		static const T						value = v;
+		typedef T							valueType;
+		typedef integral_constant<T, v>		type;
 	};
 
 	typedef integral_constant<bool, true>	true_type;
@@ -462,11 +461,12 @@ namespace ft
 			
 			const pair &operator=(const pair &rhs)
 			{
+				if (this == &rhs)
+					return (*this);
 				this->first = rhs.first;
 				this->second = rhs.second;
 				return (*this);
 			}
-
 			~pair(void) {}
 	};
 
