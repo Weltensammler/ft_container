@@ -6,7 +6,7 @@
 /*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:33:21 by ben               #+#    #+#             */
-/*   Updated: 2023/01/31 12:46:17 by ben              ###   ########.fr       */
+/*   Updated: 2023/01/30 16:33:07 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,6 @@ int main(void)
 		std::cout << "#------------------------ FT  ------------------------#" << std::endl;
 	#endif
 		std::cout << "#######################################################" << std::endl << std::endl;
-		const ft::vector<int> cvec(5,100);
-		ft::vector<int>::const_iterator citer = cvec.begin();
-		for (; citer != cvec.end(); citer++)
-			std::cout << " - " << *citer << std::endl;
 		ft::vector<std::string> vec;
 		vec.push_back("Ronaldo");
 		vec.push_back("Messi");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2022/11/24 16:32:16 by ben              ###   ########.fr       */
+/*   Updated: 2023/02/03 12:43:27 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 
 #include "iterator.hpp"
-#include "helpers.hpp"
 #include "bst.hpp"
 
 namespace ft
