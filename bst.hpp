@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/04 10:19:53 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/04 10:36:56 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ namespace ft
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef	typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-
 			struct node
 			{
 				node		*left;
@@ -47,12 +46,14 @@ namespace ft
 				node		*parent;
 				value_type	data;
 			};
+			typedef typename allocator_type::template rebind<node>::other	Node;
+			
 
 		private:
 
 			size_type														_size;
 			allocator_type													_alloc;
-			typedef typename allocator_type::template rebind<node>::other	Node;
+			
 			Node															_node_alloc;
 
 		public:
