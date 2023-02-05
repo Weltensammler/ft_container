@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/05 04:32:07 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 05:52:34 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,24 @@ namespace ft
 			typedef const ft::reverse_BST_iter<Key, T, Compare, Allocator>			const_reverse_iterator;
 
 		private:
-
+			
 			BST<key_type, mapped_type, Compare, Allocator>	_bst;
 			key_compare					_comp;
 			allocator_type				_alloc;
+			
+			
 
 		public:
 
 			/* Default Constructor */
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()):
-				_bst(), _comp(comp), _alloc(alloc) {}
+				_bst(comp, alloc), _comp(comp), _alloc(alloc) {}
 
 			/* Range Constructor */
 			template< class InputIt >
 			map(InputIt first, InputIt last, const key_compare &comp = key_compare(),
 				const allocator_type &alloc = allocator_type()):
-				_bst(), _comp(comp), _alloc(alloc)
+				_bst(comp, alloc), _comp(comp), _alloc(alloc)
 			{
 				for (;first != last; first++)
 				{
@@ -70,8 +72,11 @@ namespace ft
 			}
 
 			/* Copy Constructor */
-			map(const map &other): _comp(other._comp), _alloc(other._alloc)
+			map(const map &other)
 			{
+				_comp = other._comp;
+				_alloc = other._alloc;
+				_bst.setCompandAlloc(_comp, _alloc);
 				_bst.copyTree(other._bst.getToRoot());
 			}
 

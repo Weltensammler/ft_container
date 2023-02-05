@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2023/02/05 04:31:21 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 05:24:44 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace ft
 			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
 			typedef const value_type							&const_reference;
-			typedef typename BST<key_type, mapped_type, Compare, Allocator>::node	*BST_node;
+			typedef typename ft::node<value_type>				*BST_node;
 
 		private:
 
@@ -243,7 +243,7 @@ namespace ft
 			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
 			typedef const value_type							&const_reference;
-			typedef typename BST<key_type, mapped_type, Compare, Allocator>::node	*BST_node;
+			typedef typename ft::node<value_type>				*BST_node;
 			
 		private:
 			mutable BST_node	_p;

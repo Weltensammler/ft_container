@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/05 04:22:41 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 06:11:26 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,27 @@
 
 namespace ft
 {
-
+	template<typename value_type>
+	struct node
+	{
+		node		*left;
+		node		*right;
+		node		*parent;
+		value_type	data;
+	};
+			
 	template<	typename Key,
 				typename T,
-				typename Compare,
-				typename Allocator>
+				typename Compare = std::less<Key>,
+				typename Allocator = std::allocator<ft::pair<const Key, T> > >
 	class BST
 	{
-
 		public:
 
 			typedef Key											key_type;
 			typedef T											mapped_type;
 			typedef ft::pair<const key_type, mapped_type>		value_type;
+			typedef node<value_type>							_node;
 			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
 			typedef Compare										key_compare;
@@ -40,38 +48,33 @@ namespace ft
 			typedef	typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 
-			struct node
-			{
-				node		*left;
-				node		*right;
-				node		*parent;
-				value_type	data;
-			};
-
 		private:
 
 			size_type														_size;
 			allocator_type													_alloc;
-			typedef typename allocator_type::template rebind<node>::other	Node;
-			Node															_node_alloc;
+			typedef typename allocator_type::template rebind<node<value_type> >::other	_node_alloc;
+			_node_alloc														_alloc_node;
 
 		public:
 
-			node		*_bst;
 			key_compare	_comp;
+			_node		*_bst;
 
-			BST(): _size(0), _bst(NULL) {}
+			BST(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
+			: _size(0), _alloc(alloc), _comp(comp), _bst(NULL) {}
 
 			BST &operator=(const BST &other)
 			{
-				_bst = other._bst;
 				_size = other._size;
 				_alloc = other._alloc;
-				_node_alloc = other._node_alloc;
+				_comp = other._comp;
+				_bst = other._bst;
 				return (*this);
 			}
 
 			~BST() {}
+
+			void setCompandAlloc(key_compare comp,allocator_type alloc) {_comp = comp; _alloc = alloc;}
 
 			bool empty() const
 			{
@@ -83,9 +86,9 @@ namespace ft
 				return (this->_size);
 			}
 
-			node *_new_node(const value_type &value, node *parent = NULL)
+			_node *new_node(const value_type &value, _node *parent = NULL)
 			{		
-				node *new_node = _node_alloc.allocate(1);
+				_node *new_node = _alloc_node.allocate(1);
 
 				_alloc.construct(&(new_node->data), value);
 				new_node->left = NULL;
@@ -95,7 +98,7 @@ namespace ft
 				return (new_node);
 			}
 
-			void copyTree(node *rt = NULL)
+			void copyTree(_node *rt = NULL)
 			{
 				if (!rt)
 					return ;
@@ -109,30 +112,30 @@ namespace ft
 				return (this->_alloc.max_size());
 			}
 
-			node *getRoot() const
+			_node *getRoot() const
 			{
 				return (this->_bst);
 			}
 
-			node *getToRoot() const
+			_node *getToRoot() const
 			{
-				node *tmp = _bst;
+				_node *tmp = _bst;
 				while (tmp->parent)
 					tmp = tmp->parent;
 				return (tmp);
 			}
 
-			bool _isLeaf(node *bst) const
+			bool _isLeaf(_node *bst) const
 			{
 				return (bst->left == NULL && bst->right == NULL);
 			}
 
-			bool _isEmpty(node *bst) const
+			bool _isEmpty(_node *bst) const
 			{
 				return (bst == NULL);
 			}
 
-			void _clear(node *nd = NULL)
+			void _clear(_node *nd = NULL)
 			{
 				if (_bst == NULL)
 					return ;
@@ -148,16 +151,17 @@ namespace ft
 						nd->parent->right = NULL;
 					else if (nd->parent && nd->parent->left == nd)
 						nd->parent->left = NULL;
-					_node_alloc.deallocate(nd, 1);
+					_alloc_node.deallocate(nd, 1);
 				}
 				if (nd == _bst)
 					_bst = NULL;
 				_size--;
 			}
 
-			node *_findNode(const key_type &key) const
+			
+			_node *_findNode(const key_type &key) const
 			{
-				node *res = _bst;
+				_node *res = _bst;
 
 				for (; res != NULL && extract_key(res->data) != key;)
 				{
@@ -169,15 +173,15 @@ namespace ft
 				return (res);
 			}
 
-			node *_insert(const value_type &value)
+			_node *_insert(const value_type &value)
 			{
 				if (!_bst)
 				{
-					_bst = _new_node(value);
+					_bst = new_node(value);
 					return (_bst);
 				}
-				node *found;
-				node *tmp;
+				_node *found;
+				_node *tmp;
 				found = _findNode(value.first);
 				if (found)
 					return (found);
@@ -191,7 +195,7 @@ namespace ft
 					else
 						found = found->right;
 				}
-				found = _new_node(value, tmp);
+				found = new_node(value, tmp);
 				if (value.first < tmp->data.first)
 					tmp->left = found;
 				else
@@ -199,7 +203,7 @@ namespace ft
 				return (found);
 			}
 			
-			void _printMap(node *root)
+			void _printMap(_node *root)
 			{
 				if (root != NULL)
 				{
@@ -213,38 +217,38 @@ namespace ft
 			{
 				if (!_bst)
 					return ;
-				node *min_node = minNode(_bst);
-				node *max_node = maxNode(_bst);
+				_node *min_node = minNode(_bst);
+				_node *max_node = maxNode(_bst);
 				std::cout << "Min node: (" << min_node->data.first << ", " << min_node->data.second << ")\n";
 				std::cout << "Max node: (" << max_node->data.first << ", " << max_node->data.second << ")\n";
 			}
 
-			node *minNode(node *bst) const
+			_node *minNode(_node *bst) const
 			{
-				node *current = bst;
+				_node *current = bst;
 			
 				while (current && current->left != NULL)
 					current = current->left;
 				return (current);
 			}
 
-			node *maxNode(node *bst) const
+			_node *maxNode(_node *bst) const
 			{
-				node *current = bst;
+				_node *current = bst;
 			
 				while (current && current->right != NULL)
 					current = current->right;
 				return (current);
 			}
 
-			void changeData(node* &curr, const value_type &val)
+			void changeData(_node* &curr, const value_type &val)
 			{
 				_alloc.construct(&(curr->data), val);
 			}
 
-			void _deleteNode(node *bst)
+			void _deleteNode(_node *bst)
 			{
-				node *tmp = NULL;
+				_node *tmp = NULL;
 				if (!bst)
 					return ;
 				if (_isLeaf(bst))
@@ -262,7 +266,7 @@ namespace ft
 
 			size_type _erase(const key_type &key)
 			{
-				node*	found = _findNode(key);
+				_node*	found = _findNode(key);
 
 				if (!_bst || !found)
 					return (0);
@@ -270,18 +274,18 @@ namespace ft
 				return (1);
 			}
 
-			node*	begin(void) const
+			_node*	begin(void) const
 			{
-				node*	tmp = this->_bst;
+				_node*	tmp = this->_bst;
 
 				while (tmp && tmp->left)
 					tmp = tmp->left;
 				return (tmp);
 			}
 
-			node*	end(void) const
+			_node*	end(void) const
 			{
-				node*	tmp = this->_bst;
+				_node*	tmp = this->_bst;
 
 				while (tmp && tmp->right)
 					tmp = tmp->right;
@@ -289,18 +293,18 @@ namespace ft
 				return (tmp);
 			}
 			
-			node*	rbegin(void) const
+			_node*	rbegin(void) const
 			{
-				node*	tmp = this->_bst;
+				_node*	tmp = this->_bst;
 
 				while (tmp && tmp->right)
 					tmp = tmp->right;
 				return (tmp);
 			}
 
-			node*	rend(void) const
+			_node*	rend(void) const
 			{
-				node*	tmp = this->_bst;
+				_node*	tmp = this->_bst;
 
 				while (tmp && tmp->left)
 					tmp = tmp->left;
