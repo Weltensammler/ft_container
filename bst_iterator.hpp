@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2023/02/04 10:31:41 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 04:31:21 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,129 +20,427 @@
 namespace ft
 {
 
-	template<class node, class _value_type>
-	class tree_iterator
+	template <typename key, typename T, typename Compare, typename Allocator>
+	class BST_iter
 	{
 		public:
-			typedef typename std::bidirectional_iterator_tag	iterator_category;
-			typedef _value_type									value_type;
-			typedef _value_type*								pointer;
-			typedef _value_type&								reference;
+			typedef typename std::random_access_iterator_tag	iterator_category;
+			typedef key											key_type;
+			typedef T											mapped_type;
+			typedef ft::pair<const key_type, mapped_type>		value_type;
+			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
+			typedef const value_type							&const_reference;
+			typedef typename BST<key_type, mapped_type, Compare, Allocator>::node	*BST_node;
 
+		private:
 
-			node*												current_node;
+			mutable BST_node	_p;
+			mutable BST_node	_first;
+			mutable BST_node	_last;
 
+		public:
 
-		
-			tree_iterator() : current_node()
-			{}
+			BST_iter(): _p(NULL), _first(NULL), _last(NULL) {}
 
-			explicit tree_iterator (node* node_) : current_node(node_)
-			{}
+			BST_iter(BST_node nd, BST_node f = NULL, BST_node l = NULL): _p(nd), _first(f), _last(l) {}
 			
-			tree_iterator (const tree_iterator<node, _value_type>& rev_it) : current_node(rev_it.current_node)
-			{}
+			~BST_iter() {}
 
-			template <class U>
-			tree_iterator (const tree_iterator<node, U>& rev_it) : current_node(rev_it.current_node)
-			{}
+			BST_iter(const BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {}
 
-			tree_iterator& operator=(const tree_iterator<node, _value_type>& rev_it)
+			BST_node getPtr() const
 			{
-				current_node = rev_it.current_node;
+				return (this->_p);
+			}
+			
+			BST_node getf() const
+			{
+				return (this->_first);
+			}
+			
+			BST_node getl() const
+			{
+				return (this->_last);
+			}
+
+			BST_iter &operator=(const BST_iter &other)
+			{
+				_p = other.getPtr();
+				_first = other.getf();
+				_last = other.getl();
 				return (*this);
 			}
-			
-			tree_iterator operator ++ (int)         
-			{
-				tree_iterator tmp(*this);
-				++*this;
-				return tmp;
-			}
 
-			tree_iterator& operator ++ ()       
+			const BST_iter &operator=(const BST_iter &other) const
 			{
-				if (current_node->right && current_node->right->left)
-				{
-					current_node = current_node->right;
-					while (current_node->left->left)
-						current_node = current_node->left;
-				}
-				else
-				{
-					node* t = current_node;
-					while (current_node && current_node->p && current_node != current_node->p->left)
-					{
-						current_node = current_node->p;
-					}
-					if (!current_node->p)
-						current_node = t->right;
-					else
-						current_node = current_node->p;
-					
-				}
+				_p = other.getPtr();
+				_first = other.getf();
+				_last = other.getl();
 				return *this;
 			}
 
-			tree_iterator& operator -- ()              
+			BST_iter &operator++()
 			{
-				if (current_node->left && current_node->left->left)
+				if (!_p)
+					_p = _first;
+				else if (_p->right != NULL)
 				{
-					current_node = current_node->left;
-					while (current_node->right->left)
-						current_node = current_node->right;
+					_p = _p->right;
+					while (_p->left != NULL)
+						_p = _p->left;
 				}
 				else
 				{
-					node* t = current_node;
-					while (current_node && current_node->p && current_node != current_node->p->right)
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->right)
 					{
-						current_node = current_node->p;
+						_p = tmp;
+						tmp = tmp->parent;
 					}
-					if (!current_node->p)
-						current_node = t->left;
-					else
-						current_node = current_node->p;
+					_p = tmp;
 				}
-				return *this;
+				return (*this);
 			}
 
-			tree_iterator operator -- (int)              
+			const BST_iter &operator++() const
 			{
-				tree_iterator tmp(*this);
-				--*this;
+				if (!_p)
+					_p = _first;
+				else if (_p->right != NULL)
+				{
+					_p = _p->right;
+					while (_p->left != NULL)
+						_p = _p->left;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->right)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+			BST_iter operator++(int)
+			{
+				BST_iter tmp = *this;
+				++(*this);
 				return tmp;
 			}
-	
-			reference operator*() const 
+
+			const BST_iter operator++(int) const
 			{
-				pointer tmp = &(*current_node).data;
-				return *(tmp);
+				BST_iter tmp = *this;
+				++(*this);
+				return (tmp);
 			}
-			pointer operator->() const 
+
+			BST_iter &operator--()
 			{
-				return &(*current_node).data;
+				if (!_p)
+					_p = _last;
+				else if (_p->left != NULL)
+				{
+					_p = _p->left;
+					while (_p->right != NULL)
+						_p = _p->right;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->left)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+			const BST_iter &operator--() const
+			{
+				if (!_p)
+					_p = _last;
+				else if (_p->left != NULL)
+				{
+					_p = _p->left;
+					while (_p->right != NULL)
+						_p = _p->right;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->left)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+
+			BST_iter operator--(int)
+			{
+				BST_iter tmp = *this;
+				--(*this);
+				return (tmp);
+			}
+
+			const BST_iter operator--(int) const
+			{
+				BST_iter tmp = *this;
+				--(*this);
+				return (tmp);
+			}
+
+			value_type *operator->()
+			{
+				return (&(_p->data));
+			}
+
+			const value_type *operator->() const
+			{
+				return (&(_p->data));
+			}
+
+			value_type &operator*()
+			{
+				return (static_cast<BST_node>(_p)->data);
+			}
+
+			const value_type &operator*()const
+			{
+				return (static_cast<BST_node>(_p)->data);
+			}
+
+			friend bool operator==(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			{
+				return (lhs.getPtr() == rhs.getPtr());
+			}
+
+			friend bool operator!=(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			{
+				return (!(lhs.getPtr() == rhs.getPtr()));
 			}
 	};
-	
-	template<class node, class _value_type, class constval>
-	bool operator==( const ft::tree_iterator<node, _value_type>& lhs,
-                 const ft::tree_iterator<node, constval>& rhs )   
-	{
-		if (lhs.current_node != rhs.current_node)
-			return false;
-		return true;
-	}
 
-	template<class node, class _value_type, class constval>
-	bool operator!=( const ft::tree_iterator<node, _value_type>& lhs,
-                 const ft::tree_iterator<node, constval>& rhs )   
+	template <typename key, typename T, typename Compare, typename Allocator>
+	class reverse_BST_iter
 	{
-		if (lhs.current_node == rhs.current_node)
-			return false;
-		return true;
-	}
+		public:
+			typedef typename std::random_access_iterator_tag	iterator_category;
+			typedef key											key_type;
+			typedef T											mapped_type;
+			typedef ft::pair<const key_type, mapped_type>		value_type;
+			typedef std::size_t									size_type;
+			typedef std::ptrdiff_t								difference_type;
+			typedef const value_type							&const_reference;
+			typedef typename BST<key_type, mapped_type, Compare, Allocator>::node	*BST_node;
+			
+		private:
+			mutable BST_node	_p;
+			mutable BST_node	_first;
+			mutable BST_node	_last;
+		
+		public:
+
+			reverse_BST_iter(): _p(NULL), _first(NULL), _last(NULL) {}
+
+			reverse_BST_iter(BST_node nd, BST_node f = NULL, BST_node l = NULL): _p(nd), _first(f), _last(l) {}
+			
+			~reverse_BST_iter() {}
+
+			reverse_BST_iter(const reverse_BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {}
+
+			BST_node getPtr() const
+			{
+				return (this->_p);
+			}
+			
+			BST_node getf() const
+			{
+				return (this->_first);
+			}
+			
+			BST_node getl() const
+			{
+				return (this->_last);
+			}
+
+			reverse_BST_iter &operator=(const reverse_BST_iter &other)
+			{
+				_p = other.getPtr();
+				_first = other.getf();
+				_last = other.getl();
+				return (*this);
+			}
+
+			const reverse_BST_iter &operator=(const reverse_BST_iter &other) const
+			{
+				_p = other.getPtr();
+				_first = other.getf();
+				_last = other.getl();
+				return (*this);
+			}
+
+			reverse_BST_iter &operator--()
+			{
+				if (!_p)
+					_p = _first;
+				else if (_p->right != NULL)
+				{
+					_p = _p->right;
+					while (_p->left != NULL)
+						_p = _p->left;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->right)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+			const reverse_BST_iter &operator--() const
+			{
+				if (!_p)
+					_p = _first;
+				else if (_p->right != NULL)
+				{
+					_p = _p->right;
+					while (_p->left != NULL)
+						_p = _p->left;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->right)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+			reverse_BST_iter operator++(int)
+			{
+				reverse_BST_iter tmp = *this;
+				++(*this);
+				return (tmp);
+			}
+
+			const reverse_BST_iter operator++(int) const
+			{
+				reverse_BST_iter tmp = *this;
+				++(*this);
+				return (tmp);
+			}
+
+			reverse_BST_iter &operator++()
+			{
+				if (!_p)
+					_p = _last;
+				else if (_p->left != NULL)
+				{
+					_p = _p->left;
+					while (_p->right != NULL)
+						_p = _p->right;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->left)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+			const reverse_BST_iter &operator++() const
+			{
+				if (!_p)
+					_p = _last;
+				else if (_p->left != NULL)
+				{
+					_p = _p->left;
+					while (_p->right != NULL)
+						_p = _p->right;
+				}
+				else
+				{
+					BST_node tmp = _p->parent;
+					while (tmp != NULL && _p == tmp->left)
+					{
+						_p = tmp;
+						tmp = tmp->parent;
+					}
+					_p = tmp;
+				}
+				return (*this);
+			}
+
+			reverse_BST_iter operator--(int)
+			{
+				reverse_BST_iter tmp = *this;
+				--(*this);
+				return (tmp);
+			}
+
+			const reverse_BST_iter operator--(int) const
+			{
+				reverse_BST_iter tmp = *this;
+				--(*this);
+				return (tmp);
+			}
+
+			value_type *operator->()
+			{
+				return (&(_p->data));
+			}
+
+			const value_type *operator->() const
+			{
+				return (&(_p->data));
+			}
+
+			value_type &operator*()
+			{
+				return (static_cast<BST_node>(_p)->data);
+			}
+
+			const value_type &operator*()const
+			{
+				return (static_cast<BST_node>(_p)->data);
+			}
+
+			friend bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			{
+				return (lhs.getPtr() == rhs.getPtr());
+			}
+
+			friend bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			{
+				return (!(lhs.getPtr() == rhs.getPtr()));
+			}
+	};
 }
 
 #endif

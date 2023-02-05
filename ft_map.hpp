@@ -6,7 +6,7 @@
 /*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/04 10:37:52 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 04:32:07 by tguth            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,25 @@ namespace ft
 	{
 		public:
 
-			typedef Key												key_type;
-			typedef T												mapped_type;
-			typedef ft::pair<const key_type, mapped_type>			value_type;
-			typedef std::size_t										size_type;
-			typedef std::ptrdiff_t									difference_type;
-			typedef Compare											key_compare;
-			typedef typename ft::BST<Key, T, Compare, Allocator>::Node		node;
-			typedef Allocator										allocator_type;
-			typedef value_type&										reference;
-			typedef const value_type&								const_reference;
-			typedef typename allocator_type::pointer				pointer;
-			typedef typename allocator_type::const_pointer			const_pointer;
-			typedef tree_iterator<node, value_type>					iterator;
-			typedef const tree_iterator<node, value_type>			const_iterator;
-			// typedef ft::reverse_BST_iter<node, value_type>			reverse_iterator;
-			// typedef const ft::reverse_BST_iter<node, value_type>	const_reverse_iterator;
+			typedef Key											key_type;
+			typedef T											mapped_type;
+			typedef ft::pair<const key_type, mapped_type>		value_type;
+			typedef std::size_t									size_type;
+			typedef std::ptrdiff_t								difference_type;
+			typedef Compare										key_compare;
+			typedef Allocator									allocator_type;
+			typedef value_type&									reference;
+			typedef const value_type&							const_reference;
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef ft::BST_iter<Key, T, Compare, Allocator>						iterator;
+			typedef const ft::BST_iter<Key, T, Compare, Allocator>					const_iterator;
+			typedef ft::reverse_BST_iter<Key, T, Compare, Allocator>				reverse_iterator;
+			typedef const ft::reverse_BST_iter<Key, T, Compare, Allocator>			const_reverse_iterator;
 
 		private:
 
-			BST<key_type, mapped_type>	_bst;
+			BST<key_type, mapped_type, Compare, Allocator>	_bst;
 			key_compare					_comp;
 			allocator_type				_alloc;
 
@@ -91,9 +90,9 @@ namespace ft
 				return (*this);
 			}
 
-			class value_compare
+			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
-				friend class map;
+				friend class map<key_type, mapped_type, key_compare, Allocator>;
 
 				protected:
 					key_compare	comp;
@@ -161,25 +160,25 @@ namespace ft
 				return (const_iterator(NULL, _bst.begin(), _bst.rbegin()));
 			}
 
-			// reverse_iterator rbegin()
-			// {
-			// 	return (reverse_iterator(_bst.rbegin(), _bst.begin(), _bst.rbegin()));
-			// }
+			reverse_iterator rbegin()
+			{
+				return (reverse_iterator(_bst.rbegin(), _bst.begin(), _bst.rbegin()));
+			}
 
-			// const_reverse_iterator rbegin() const
-			// {
-			// 	return (const_reverse_iterator(_bst.rbegin(), _bst.begin(), _bst.rbegin()));
-			// }
+			const_reverse_iterator rbegin() const
+			{
+				return (const_reverse_iterator(_bst.rbegin(), _bst.begin(), _bst.rbegin()));
+			}
 
-			// reverse_iterator rend()
-			// {
-			// 	return (reverse_iterator(NULL, _bst.begin(), _bst.rbegin()));
-			// }
+			reverse_iterator rend()
+			{
+				return (reverse_iterator(NULL, _bst.begin(), _bst.rbegin()));
+			}
 			
-			// const_reverse_iterator rend() const
-			// {
-			// 	return (const_reverse_iterator(NULL, _bst.begin(), _bst.rbegin()));
-			// }
+			const_reverse_iterator rend() const
+			{
+				return (const_reverse_iterator(NULL, _bst.begin(), _bst.rbegin()));
+			}
 
 			bool empty() const
 			{
@@ -260,7 +259,7 @@ namespace ft
 
 			void swap(map &other)
 			{
-				BST<key_type, mapped_type>	tmp_bst = _bst;
+				BST<key_type, mapped_type, Compare, Allocator>	tmp_bst = _bst;
 				key_compare					tmp_comp = _comp;
 				allocator_type				tmp_alloc = _alloc;
 				
