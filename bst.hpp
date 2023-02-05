@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/05 06:11:26 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 13:24:21 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,13 @@ namespace ft
 				new_node->left = NULL;
 				new_node->right = NULL;
 				new_node->parent = parent;
+				if (parent)
+				{
+					if (value.first < parent->data.first)
+						parent->left = new_node;
+					else
+						parent->right = new_node;
+				}
 				_size++;
 				return (new_node);
 			}
@@ -173,7 +180,7 @@ namespace ft
 				return (res);
 			}
 
-			_node *_insert(const value_type &value)
+			_node *_insert(const value_type value)
 			{
 				if (!_bst)
 				{

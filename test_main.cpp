@@ -1,38 +1,25 @@
-#include "ft_vector.hpp"
+# include "ft_vector.hpp"
+# include "ft_stack.hpp"
+# include "ft_map.hpp"
+# include <map>
+#include <list>
+
+#define T1 int
+#define T2 int
+typedef ft::pair<const T1, T2> T3;
 
 int		main(void)
 {
-	ft::vector<int> vct(5);
-	ft::vector<int>::iterator it = vct.begin(), ite = vct.end();
+	ft::map<T1, T2> mp;
+	ft::map<T1, T2>::iterator it = mp.begin();
+	ft::map<T1, T2>::const_iterator cit = mp.begin();
 
-	std::cout << "len: " << (ite - it) << std::endl;
-	for (; it != ite; ++it)
-		*it = (ite - it);
+	ft::map<T1, T2>::reverse_iterator rit(it);
 
-	it = vct.begin();
-	ft::vector<int> vct_range(it, --(--ite));
-	for (int i = 0; it != ite; ++it)
-		*it = ++i * 5;
+	ft::map<T1, T2>::const_reverse_iterator crit(rit);
+	ft::map<T1, T2>::const_reverse_iterator crit_(it);
+	ft::map<T1, T2>::const_reverse_iterator crit_2(cit);
 
-	it = vct.begin();
-	ft::vector<int> vct_copy(vct);
-	for (int i = 0; it != ite; ++it)
-		*it = ++i * 7;
-	vct_copy.push_back(42);
-	vct_copy.push_back(21);
-
-	std::cout << "\t-- PART ONE --" << std::endl;
-	vct.size();
-	vct_range.size();
-	vct_copy.size();
-
-	vct = vct_copy;
-	vct_copy = vct_range;
-	vct_range.clear();
-
-	std::cout << "\t-- PART TWO --" << std::endl;
-	vct.size();
-	vct_range.size();
-	vct_copy.size();
+	std::cout << "OK" << std::endl;
 	return (0);
 }

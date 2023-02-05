@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2023/02/05 05:24:44 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 15:55:30 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,13 @@ namespace ft
 			typedef ft::pair<const key_type, mapped_type>		value_type;
 			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
-			typedef const value_type							&const_reference;
+			typedef value_type*									pointer;
+			typedef value_type&									reference;
+			typedef const value_type*							const_pointer;
+			typedef const value_type&							const_reference;
 			typedef typename ft::node<value_type>				*BST_node;
 
-		private:
+		//private:
 
 			mutable BST_node	_p;
 			mutable BST_node	_first;
@@ -44,7 +47,7 @@ namespace ft
 			BST_iter(): _p(NULL), _first(NULL), _last(NULL) {}
 
 			BST_iter(BST_node nd, BST_node f = NULL, BST_node l = NULL): _p(nd), _first(f), _last(l) {}
-			
+
 			~BST_iter() {}
 
 			BST_iter(const BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {}
@@ -79,6 +82,8 @@ namespace ft
 				_last = other.getl();
 				return *this;
 			}
+
+
 
 			BST_iter &operator++()
 			{
@@ -242,7 +247,10 @@ namespace ft
 			typedef ft::pair<const key_type, mapped_type>		value_type;
 			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
-			typedef const value_type							&const_reference;
+			typedef value_type*									pointer;
+			typedef value_type&									reference;
+			typedef const value_type*							const_pointer;
+			typedef const value_type&							const_reference;
 			typedef typename ft::node<value_type>				*BST_node;
 			
 		private:
@@ -254,11 +262,24 @@ namespace ft
 
 			reverse_BST_iter(): _p(NULL), _first(NULL), _last(NULL) {}
 
+			template<typename InputIterator>
+			reverse_BST_iter(InputIterator first)
+			{
+				this->_p = first._p;
+				this->_first = first._first;
+				this->_last = first._last;
+			}
+
 			reverse_BST_iter(BST_node nd, BST_node f = NULL, BST_node l = NULL): _p(nd), _first(f), _last(l) {}
 			
 			~reverse_BST_iter() {}
 
 			reverse_BST_iter(const reverse_BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {}
+
+			pointer base() const
+			{
+				return (this->_p);
+			}
 
 			BST_node getPtr() const
 			{
@@ -431,16 +452,29 @@ namespace ft
 				return (static_cast<BST_node>(_p)->data);
 			}
 
-			friend bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			{
-				return (lhs.getPtr() == rhs.getPtr());
-			}
+			// template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
+			// friend bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			// {
+			// 	return (lhs.getPtr() == rhs.getPtr());
+			// }
 
-			friend bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			{
-				return (!(lhs.getPtr() == rhs.getPtr()));
-			}
+			// template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
+			// friend bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			// {
+			// 	return (!(lhs.getPtr() == rhs.getPtr()));
+			// }
 	};
+	template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
+	bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+	{
+		return (lhs.getPtr() == rhs.getPtr());
+	}
+
+	template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
+	bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+	{
+		return (!(lhs.getPtr() == rhs.getPtr()));
+	}
 }
 
 #endif

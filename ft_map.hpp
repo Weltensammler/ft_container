@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_map.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tguth <tguth@student.42wolfsburg.de>       +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/05 05:52:34 by tguth            ###   ########.fr       */
+/*   Updated: 2023/02/05 13:35:05 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ namespace ft
 			/* Copy Constructor */
 			map(const map &other)
 			{
-				_comp = other._comp;
-				_alloc = other._alloc;
 				_bst.setCompandAlloc(_comp, _alloc);
 				_bst.copyTree(other._bst.getToRoot());
 			}
@@ -83,7 +81,6 @@ namespace ft
 			/* Deconstructor */
 			~map()
 			{
-				this->clear();
 			}
 
 			map &operator=(const map &rhs)
@@ -92,6 +89,8 @@ namespace ft
 					return (*this);
 				clear();
 				_bst.copyTree(rhs._bst.getToRoot());
+				_comp = rhs._comp;
+				_alloc = rhs._alloc;
 				return (*this);
 			}
 
@@ -385,19 +384,19 @@ namespace ft
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator<=(const map<Key,T,Compare,Alloc> &lhs, const map<Key,T,Compare,Alloc> &rhs)
 	{
-		return (!(rhs < lhs));
+		return !(rhs < lhs);
 	}
 
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator>(const map<Key,T,Compare,Alloc> &lhs, const map<Key,T,Compare,Alloc> &rhs)
 	{
-		return (!(lhs < rhs) && (lhs != rhs));
+		return (rhs < lhs);
 	}
 
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator>=(const map<Key,T,Compare,Alloc> &lhs, const map<Key,T,Compare,Alloc> &rhs)
 	{
-		return (lhs > rhs || rhs == lhs);
+		return !(lhs < rhs);
 	}
 }
 
