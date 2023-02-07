@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2023/02/06 13:14:40 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:06:42 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,19 @@
 namespace ft
 {
 
-	template <typename key, typename T, typename Compare, typename Allocator>
+	template <typename T>
 	class BST_iter
 	{
 		public:
-			typedef typename std::random_access_iterator_tag	iterator_category;
-			typedef key											key_type;
-			typedef T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type;
-			typedef std::size_t									size_type;
-			typedef std::ptrdiff_t								difference_type;
-			typedef value_type*									pointer;
-			typedef value_type&									reference;
-			typedef const value_type*							const_pointer;
-			typedef const value_type&							const_reference;
-			typedef typename ft::node<value_type>				*BST_node;
+			typedef typename iterator_traits<T*>::iterator_category		iterator_category;
+			typedef typename iterator_traits<T*>::value_type 			value_type;
+			typedef typename iterator_traits<T*>::reference 			reference;
+			typedef typename iterator_traits<T*>::pointer				pointer;
+			typedef typename iterator_traits<T*>::difference_type		difference_type;
+			typedef T													iterator_type;
+			typedef const value_type*									const_pointer;
+			typedef const value_type&									const_reference;
+			typedef typename ft::node<value_type>						*BST_node;
 
 		//private:
 
@@ -226,32 +224,43 @@ namespace ft
 				return (static_cast<BST_node>(_p)->data);
 			}
 
-			friend bool operator==(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			{
-				return (lhs.getPtr() == rhs.getPtr());
-			}
+			// friend bool operator==(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			// {
+			// 	return (lhs.getPtr() == rhs.getPtr());
+			// }
 
-			friend bool operator!=(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			{
-				return (!(lhs.getPtr() == rhs.getPtr()));
-			}
+			// friend bool operator!=(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+			// {
+			// 	return (!(lhs.getPtr() == rhs.getPtr()));
+			// }
 	};
+	
+	template<typename A, typename B>
+	bool operator==(const BST_iter<A> &lhs, const BST_iter<B> &rhs)
+	{
+		return (lhs.getPtr() == rhs.getPtr());
+	}
 
-	template <typename key, typename T, typename Compare, typename Allocator>
+	template<typename A, typename B>
+	bool operator!=(const BST_iter<A> &lhs, const BST_iter<B> &rhs)
+	{
+		return (!(lhs.getPtr() == rhs.getPtr()));
+	}
+
+	template <typename T>
 	class reverse_BST_iter
 	{
 		public:
-			typedef typename std::random_access_iterator_tag	iterator_category;
-			typedef key											key_type;
-			typedef T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type;
-			typedef std::size_t									size_type;
-			typedef std::ptrdiff_t								difference_type;
-			typedef value_type*									pointer;
-			typedef value_type&									reference;
-			typedef const value_type*							const_pointer;
-			typedef const value_type&							const_reference;
-			typedef typename ft::node<value_type>				*BST_node;
+			typedef typename iterator_traits<T*>::iterator_category		iterator_category;
+			typedef typename iterator_traits<T*>::value_type 			value_type;
+			typedef typename iterator_traits<T*>::reference 			reference;
+			typedef typename iterator_traits<T*>::pointer				pointer;
+			typedef typename iterator_traits<T*>::difference_type		difference_type;
+			typedef T													iterator_type;
+			typedef const value_type*									const_pointer;
+			typedef const value_type&									const_reference;
+			typedef typename ft::node<value_type>						*BST_node;
+
 			
 		private:
 			mutable BST_node	_p;
@@ -276,9 +285,12 @@ namespace ft
 
 			reverse_BST_iter(const reverse_BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {}
 
-			pointer base() const
+			BST_iter<T> base() const
 			{
-				return (this->_p);
+				// return (this->_p);
+				BST_iter<T> it(this->_p, this->_first, this->_last);
+				// return (BST_iter<T>(this->_p, this->_first, this->_last));
+				return (--it);
 			}
 
 			BST_node getPtr() const
@@ -464,14 +476,14 @@ namespace ft
 			// 	return (!(lhs.getPtr() == rhs.getPtr()));
 			// }
 	};
-	template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
-	bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+	template<typename A, typename B>
+	bool operator==(const reverse_BST_iter<A> &lhs, const reverse_BST_iter<B> &rhs)
 	{
 		return (lhs.getPtr() == rhs.getPtr());
 	}
 
-	template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
-	bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+	template<typename A, typename B>
+	bool operator!=(const reverse_BST_iter<A> &lhs, const reverse_BST_iter<B> &rhs)
 	{
 		return (!(lhs.getPtr() == rhs.getPtr()));
 	}
