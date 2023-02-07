@@ -6,7 +6,7 @@
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/06 14:31:05 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/07 17:36:03 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "iterator.hpp"
 #include <cstdio>
+#include "ft_map.hpp"
 
 namespace ft
 {
@@ -96,7 +97,7 @@ namespace ft
 				new_node->parent = parent;
 				if (parent)
 				{
-					if (value.first < parent->data.first)
+					if (this->_comp(value.first, parent->data.first))
 						parent->left = new_node;
 					else
 						parent->right = new_node;
@@ -197,13 +198,15 @@ namespace ft
 				while (found != NULL)
 				{
 					tmp = found;
-					if (value.first < found->data.first)
+					if (this->_comp(value.first, found->data.first)) {
 						found = found->left;
-					else
+					}
+					else {
 						found = found->right;
+					}
 				}
 				found = new_node(value, tmp);
-				if (value.first < tmp->data.first)
+				if (this->_comp(value.first, tmp->data.first))
 					tmp->left = found;
 				else
 					tmp->right = found;
