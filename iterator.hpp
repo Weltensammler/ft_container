@@ -79,7 +79,8 @@ namespace ft
 			~Iterator() {}
 
 			template <class U>
-			Iterator(const Iterator<U>& src) : _ptr(src.base()) {}
+			Iterator(const Iterator<U>& src) : _ptr(src.base()) {
+			}
 
 			pointer base() const { return (_ptr);}
 
@@ -459,7 +460,7 @@ namespace ft
 			template <class U, class V>
 			pair(const pair<U, V> &copy) : first(copy.first), second(copy.second) {}
 			
-			const pair &operator=(const pair &rhs)
+			pair &operator=(const pair &rhs)
 			{
 				if (this == &rhs)
 					return (*this);
@@ -510,6 +511,43 @@ namespace ft
 	pair<T1, T2> make_pair(T1 x, T2 y)
 	{
 		return (pair<T1, T2>(x, y));
+	}
+
+		template <bool flag, class IsTrueType, class IsFalseType>
+	struct choose;
+
+	template <class IsTrueType, class IsFalseType>
+	struct choose<true, IsTrueType, IsFalseType>
+	{
+		typedef IsTrueType type;
+	};
+
+	template <class IsTrueType, class IsFalseType>
+	struct choose<false, IsTrueType, IsFalseType>
+	{
+		typedef IsFalseType type;
+	};
+
+		template <class InputIterator1, class InputIterator2>
+	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+	{
+		for (; first1 != last1; ++first1, ++first2)
+		{
+			if (!(*first1 == *first2))
+				return (false);
+		}
+		return (true);
+	}
+
+	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
+	{
+		for (; first1 != last1; ++first1, ++first2)
+		{
+			if (!(pred(*first1 == *first2)))
+				return (false);
+		}
+		return (true);
 	}
 }
 

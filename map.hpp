@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_map.hpp                                         :+:      :+:    :+:   */
+/*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/07 18:04:28 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:45:07 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include "ft_vector.hpp"
+#include "vector.hpp"
 #include "iterator.hpp"
 #include "bst.hpp"
 #include "bst_iterator.hpp"
@@ -28,21 +28,21 @@ namespace ft
 	class map
 	{
 	public:
-		typedef Key key_type;
-		typedef T mapped_type;
-		typedef ft::pair<const key_type, mapped_type> value_type;
-		typedef std::size_t size_type;
-		typedef std::ptrdiff_t difference_type;
-		typedef Compare key_compare;
-		typedef Allocator allocator_type;
-		typedef value_type &reference;
-		typedef const value_type &const_reference;
-		typedef typename allocator_type::pointer pointer;
-		typedef typename allocator_type::const_pointer const_pointer;
-		typedef ft::BST_iter<Key, T, Compare, Allocator> iterator;
-		typedef const ft::BST_iter<Key, T, Compare, Allocator> const_iterator;
-		typedef ft::reverse_BST_iter<Key, T, Compare, Allocator> reverse_iterator;
-		typedef const ft::reverse_BST_iter<Key, T, Compare, Allocator> const_reverse_iterator;
+		typedef Key													key_type;
+		typedef T													mapped_type;
+		typedef ft::pair<const key_type, mapped_type>				value_type;
+		typedef std::size_t											size_type;
+		typedef std::ptrdiff_t										difference_type;
+		typedef Compare												key_compare;
+		typedef Allocator											allocator_type;
+		typedef value_type											&reference;
+		typedef const value_type									&const_reference;
+		typedef typename allocator_type::pointer					pointer;
+		typedef typename allocator_type::const_pointer				const_pointer;
+		typedef typename ft::BST_iter<value_type, false>			iterator;
+		typedef typename ft::BST_iter<value_type, true>				const_iterator;
+		typedef typename ft::reverse_BST_iter<iterator>				reverse_iterator;
+		typedef typename ft::reverse_BST_iter<const_iterator>		const_reverse_iterator;
 
 	private:
 		BST<key_type, mapped_type, Compare, Allocator> _bst;
@@ -69,6 +69,7 @@ namespace ft
 		/* Copy Constructor */
 		map(const map &other)
 		{
+			// std::cout << "Map = operator" << std::endl;
 			_bst.setCompandAlloc(_comp, _alloc);
 			_bst.copyTree(other._bst.getToRoot());
 		}
@@ -80,6 +81,7 @@ namespace ft
 
 		map &operator=(const map &rhs)
 		{
+			// std::cout << "Map = operator" << std::endl;
 			if (*this == rhs)
 				return (*this);
 			clear();
@@ -161,22 +163,22 @@ namespace ft
 
 		reverse_iterator rbegin()
 		{
-			return (reverse_iterator(_bst.rbegin(), _bst.begin(), _bst.rbegin()));
+			return (reverse_iterator(this->end()));
 		}
 
 		const_reverse_iterator rbegin() const
 		{
-			return (const_reverse_iterator(_bst.rbegin(), _bst.begin(), _bst.rbegin()));
+			return (const_reverse_iterator(this->end()));
 		}
 
 		reverse_iterator rend()
 		{
-			return (reverse_iterator(NULL, _bst.begin(), _bst.rbegin()));
+			return (reverse_iterator(this->begin()));
 		}
 
 		const_reverse_iterator rend() const
 		{
-			return (const_reverse_iterator(NULL, _bst.begin(), _bst.rbegin()));
+			return (const_reverse_iterator(this->begin()));
 		}
 
 		bool empty() const
@@ -368,7 +370,7 @@ namespace ft
 	{
 		if (lhs.size() != rhs.size())
 			return (false);
-		return (std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>

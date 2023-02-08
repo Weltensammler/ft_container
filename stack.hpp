@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stack.hpp                                       :+:      :+:    :+:   */
+/*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:33 by ben               #+#    #+#             */
-/*   Updated: 2023/02/03 15:20:13 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/08 09:55:44 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_HPP
 # define STACK_HPP
 
-#include "ft_vector.hpp"
+#include "vector.hpp"
 
 namespace ft
 {

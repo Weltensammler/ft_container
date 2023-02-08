@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/07 17:36:03 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/08 09:55:18 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "iterator.hpp"
 #include <cstdio>
-#include "ft_map.hpp"
+#include "map.hpp"
 
 namespace ft
 {

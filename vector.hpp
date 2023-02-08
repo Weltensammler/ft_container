@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vector.hpp                                      :+:      :+:    :+:   */
+/*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/03 12:57:32 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:07:52 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,8 @@ namespace ft
 					first++;
 					new_end++;
 				}
-				this->_alloc.deallocate(this->_container, this->capacity());
+				if (this->_container)
+					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
@@ -317,7 +318,8 @@ namespace ft
 			}
 			else
 			{
-				this->_alloc.deallocate(this->_container, this->capacity());
+				if (this->_container)
+					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = this->_alloc.allocate(n);
 				this->_end = this->_container;
 				this->_capacity = n;

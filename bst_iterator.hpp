@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2023/02/07 18:05:43 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/08 15:35:48 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,34 @@
 namespace ft
 {
 
-	template <typename key, typename T, typename Compare, typename Allocator>
+	template <typename key, bool isConst>
 	class BST_iter
 	{
 		public:
-			typedef typename std::random_access_iterator_tag	iterator_category;
-			typedef key											key_type;
-			typedef T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type;
-			typedef std::size_t									size_type;
-			typedef std::ptrdiff_t								difference_type;
-			typedef value_type*									pointer;
-			typedef value_type&									reference;
-			typedef const value_type*							const_pointer;
-			typedef const value_type&							const_reference;
-			typedef typename ft::node<value_type>				*BST_node;
-
-		//private:
-
-			mutable BST_node	_p;
-			mutable BST_node	_first;
-			mutable BST_node	_last;
+		typedef key 																					key_type;
+		typedef const key_type																			const_key_type;
+		typedef	key_type																				normal_key_type;
+		typedef typename choose<isConst, const_key_type, normal_key_type>::type							value_type;
+		typedef typename ft::Iterator<value_type>::difference_type										difference_type;
+		typedef typename ft::Iterator<value_type>::pointer												pointer;
+		typedef typename ft::Iterator<value_type>::reference											reference;
+		typedef typename ft::Iterator<value_type>::iterator_category									iterator_category;
+		
+		private:
+		typedef const node<key>												const_node;
+		typedef node<key>													normal_node;
+		typedef typename choose<isConst, const_node, normal_node>::type *	node_ptr;
+		
+		node_ptr _p;
+		node_ptr _first;
+		node_ptr _last;
 
 		public:
 
 			BST_iter(): _p(NULL), _first(NULL), _last(NULL) {
 			}
 
-			BST_iter(BST_node nd, BST_node f = NULL, BST_node l = NULL): _p(nd), _first(f), _last(l) {
+			BST_iter(node_ptr nd, node_ptr f = NULL, node_ptr l = NULL): _p(nd), _first(f), _last(l) {
 			}
 
 			~BST_iter() {}
@@ -56,38 +56,32 @@ namespace ft
 			BST_iter(const BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {
 			}
 
-			BST_node getPtr() const
+			
+			template<typename TypeKey, bool TypeIsConst>
+			BST_iter(BST_iter<TypeKey, TypeIsConst> const & other) : _p(other.getPtr()), _first(other.getf()), _last(other.getl()){
+			}
+			node_ptr getPtr() const
 			{
 				return (this->_p);
 			}
 			
-			BST_node getf() const
+			node_ptr getf() const
 			{
 				return (this->_first);
 			}
 			
-			BST_node getl() const
+			node_ptr getl() const
 			{
 				return (this->_last);
 			}
 
-			BST_iter &operator=(const BST_iter &other)
+			BST_iter const &operator=(const BST_iter &other)
 			{
 				_p = other.getPtr();
 				_first = other.getf();
 				_last = other.getl();
 				return (*this);
 			}
-
-			const BST_iter &operator=(const BST_iter &other) const
-			{
-				_p = other.getPtr();
-				_first = other.getf();
-				_last = other.getl();
-				return *this;
-			}
-
-
 
 			BST_iter &operator++()
 			{
@@ -101,30 +95,7 @@ namespace ft
 				}
 				else
 				{
-					BST_node tmp = _p->parent;
-					while (tmp != NULL && _p == tmp->right)
-					{
-						_p = tmp;
-						tmp = tmp->parent;
-					}
-					_p = tmp;
-				}
-				return (*this);
-			}
-
-			const BST_iter &operator++() const
-			{
-				if (!_p)
-					_p = _first;
-				else if (_p->right != NULL)
-				{
-					_p = _p->right;
-					while (_p->left != NULL)
-						_p = _p->left;
-				}
-				else
-				{
-					BST_node tmp = _p->parent;
+					node_ptr tmp = _p->parent;
 					while (tmp != NULL && _p == tmp->right)
 					{
 						_p = tmp;
@@ -142,13 +113,6 @@ namespace ft
 				return tmp;
 			}
 
-			const BST_iter operator++(int) const
-			{
-				BST_iter tmp = *this;
-				++(*this);
-				return (tmp);
-			}
-
 			BST_iter &operator--()
 			{
 				if (!_p)
@@ -161,7 +125,7 @@ namespace ft
 				}
 				else
 				{
-					BST_node tmp = _p->parent;
+					node_ptr tmp = _p->parent;
 					while (tmp != NULL && _p == tmp->left)
 					{
 						_p = tmp;
@@ -171,30 +135,6 @@ namespace ft
 				}
 				return (*this);
 			}
-
-			const BST_iter &operator--() const
-			{
-				if (!_p)
-					_p = _last;
-				else if (_p->left != NULL)
-				{
-					_p = _p->left;
-					while (_p->right != NULL)
-						_p = _p->right;
-				}
-				else
-				{
-					BST_node tmp = _p->parent;
-					while (tmp != NULL && _p == tmp->left)
-					{
-						_p = tmp;
-						tmp = tmp->parent;
-					}
-					_p = tmp;
-				}
-				return (*this);
-			}
-
 
 			BST_iter operator--(int)
 			{
@@ -210,275 +150,121 @@ namespace ft
 				return (tmp);
 			}
 
-			value_type *operator->()
+			value_type *operator->() const
 			{
 				return (&(_p->data));
 			}
 
-			const value_type *operator->() const
+			value_type &operator*() const
 			{
-				return (&(_p->data));
+				return (static_cast<node_ptr>(_p)->data);
 			}
 
-			value_type &operator*()
+			bool operator==(const BST_iter & src)
 			{
-				return (static_cast<BST_node>(_p)->data);
+				return (this->_p == src._p);
 			}
 
-			const value_type &operator*()const
+			bool operator!=(const BST_iter & src)
 			{
-				return (static_cast<BST_node>(_p)->data);
-			}
-
-			friend bool operator==(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			{
-				return (lhs.getPtr() == rhs.getPtr());
-			}
-
-			friend bool operator!=(const BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			{
-				return (!(lhs.getPtr() == rhs.getPtr()));
+				return (this->_p != src._p);
 			}
 	};
-
-	template <typename key, typename T, typename Compare, typename Allocator>
+	
+	template <typename Iterator>
 	class reverse_BST_iter
 	{
 		public:
-			typedef typename std::random_access_iterator_tag	iterator_category;
-			typedef key											key_type;
-			typedef T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type;
-			typedef std::size_t									size_type;
-			typedef std::ptrdiff_t								difference_type;
-			typedef value_type*									pointer;
-			typedef value_type&									reference;
-			typedef const value_type*							const_pointer;
-			typedef const value_type&							const_reference;
-			typedef typename ft::node<value_type>				*BST_node;
-			
+		typedef Iterator													iterator_type;
+		typedef typename ft::iterator_traits<Iterator>::iterator_category	iterator_category;
+		typedef typename ft::iterator_traits<Iterator>::value_type			value_type;
+		typedef typename ft::iterator_traits<Iterator>::difference_type		difference_type;
+		typedef typename ft::iterator_traits<Iterator>::pointer				pointer;
+		typedef typename ft::iterator_traits<Iterator>::reference			reference;
+
 		private:
-			mutable BST_node	_p;
-			mutable BST_node	_first;
-			mutable BST_node	_last;
-		
+		iterator_type	_base;
+
 		public:
+		reverse_BST_iter(void)
+		{
+		}
 
-			reverse_BST_iter(): _p(NULL), _first(NULL), _last(NULL) {}
+		explicit reverse_BST_iter (iterator_type it) : _base(it)
+		{
+		}
 
-			template<typename InputIterator>
-			reverse_BST_iter(InputIterator first)
-			{
-				this->_p = first._p;
-				this->_first = first._first;
-				this->_last = first._last;
-			}
+		reverse_BST_iter (const reverse_BST_iter<Iterator>& rev_it) : _base(rev_it._base)
+		{
+		}
+		
+		template< class Iter >
+		reverse_BST_iter(const reverse_BST_iter<Iter>& rev_it) : _base(rev_it.base())
+		{
+		}
+		
+		reverse_BST_iter const & operator=(reverse_BST_iter const & rhs)
+		{
+			this->_base = rhs._base;
+			return (*this);
+		}
 
-			reverse_BST_iter(BST_node nd, BST_node f = NULL, BST_node l = NULL): _p(nd), _first(f), _last(l) {}
-			
-			~reverse_BST_iter() {}
+		iterator_type base() const
+		{
+			return (this->_base);
+		}
+		
+		reference	operator*() const
+		{
+			iterator_type	tmp(this->_base);
+			--tmp;
+			return (*tmp);
+		}
+		
+		pointer operator->() const
+		{
+			return (&(operator*()));
+		}
 
-			reverse_BST_iter(const reverse_BST_iter &it) : _p(it._p), _first(it._first), _last(it._last) {}
+		reverse_BST_iter &	operator++()
+		{
+			--(this->_base);
+			return (*this);
+		}
+		
+		reverse_BST_iter	operator++(int)
+		{
+			reverse_BST_iter tmp(this->_base);
+			--(this->_base);
+			return (tmp);
+		}
+		
+		reverse_BST_iter& operator--()
+		{
+			++(this->_base);
+			return (*this);
+		}
+		
+		reverse_BST_iter  operator--(int)
+		{
+			reverse_BST_iter tmp(this->_base);
+			++(this->_base);
+			return (tmp);
+		}
+		
 
-			BST_iter<key, T, Compare, Allocator> base() const
-			{
-				BST_iter<key, T, Compare, Allocator> it(this->_p, this->_first, this->_last);
-				return (it);
-			}
-
-			BST_node getPtr() const
-			{
-				return (this->_p);
-			}
-			
-			BST_node getf() const
-			{
-				return (this->_first);
-			}
-			
-			BST_node getl() const
-			{
-				return (this->_last);
-			}
-
-			reverse_BST_iter &operator=(const reverse_BST_iter &other)
-			{
-				_p = other.getPtr();
-				_first = other.getf();
-				_last = other.getl();
-				return (*this);
-			}
-
-			const reverse_BST_iter &operator=(const reverse_BST_iter &other) const
-			{
-				_p = other.getPtr();
-				_first = other.getf();
-				_last = other.getl();
-				return (*this);
-			}
-
-			reverse_BST_iter &operator--()
-			{
-				if (!_p)
-					_p = _first;
-				else if (_p->right != NULL)
-				{
-					_p = _p->right;
-					while (_p->left != NULL)
-						_p = _p->left;
-				}
-				else
-				{
-					BST_node tmp = _p->parent;
-					while (tmp != NULL && _p == tmp->right)
-					{
-						_p = tmp;
-						tmp = tmp->parent;
-					}
-					_p = tmp;
-				}
-				return (*this);
-			}
-
-			const reverse_BST_iter &operator--() const
-			{
-				if (!_p)
-					_p = _first;
-				else if (_p->right != NULL)
-				{
-					_p = _p->right;
-					while (_p->left != NULL)
-						_p = _p->left;
-				}
-				else
-				{
-					BST_node tmp = _p->parent;
-					while (tmp != NULL && _p == tmp->right)
-					{
-						_p = tmp;
-						tmp = tmp->parent;
-					}
-					_p = tmp;
-				}
-				return (*this);
-			}
-
-			reverse_BST_iter operator++(int)
-			{
-				reverse_BST_iter tmp = *this;
-				++(*this);
-				return (tmp);
-			}
-
-			const reverse_BST_iter operator++(int) const
-			{
-				reverse_BST_iter tmp = *this;
-				++(*this);
-				return (tmp);
-			}
-
-			reverse_BST_iter &operator++()
-			{
-				if (!_p)
-					_p = _last;
-				else if (_p->left != NULL)
-				{
-					_p = _p->left;
-					while (_p->right != NULL)
-						_p = _p->right;
-				}
-				else
-				{
-					BST_node tmp = _p->parent;
-					while (tmp != NULL && _p == tmp->left)
-					{
-						_p = tmp;
-						tmp = tmp->parent;
-					}
-					_p = tmp;
-				}
-				return (*this);
-			}
-
-			const reverse_BST_iter &operator++() const
-			{
-				if (!_p)
-					_p = _last;
-				else if (_p->left != NULL)
-				{
-					_p = _p->left;
-					while (_p->right != NULL)
-						_p = _p->right;
-				}
-				else
-				{
-					BST_node tmp = _p->parent;
-					while (tmp != NULL && _p == tmp->left)
-					{
-						_p = tmp;
-						tmp = tmp->parent;
-					}
-					_p = tmp;
-				}
-				return (*this);
-			}
-
-			reverse_BST_iter operator--(int)
-			{
-				reverse_BST_iter tmp = *this;
-				--(*this);
-				return (tmp);
-			}
-
-			const reverse_BST_iter operator--(int) const
-			{
-				reverse_BST_iter tmp = *this;
-				--(*this);
-				return (tmp);
-			}
-
-			value_type *operator->()
-			{
-				return (&(_p->data));
-			}
-
-			const value_type *operator->() const
-			{
-				return (&(_p->data));
-			}
-
-			value_type &operator*()
-			{
-				return (static_cast<BST_node>(_p)->data);
-			}
-
-			const value_type &operator*()const
-			{
-				return (static_cast<BST_node>(_p)->data);
-			}
-
-			// template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
-			// friend bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			// {
-			// 	return (lhs.getPtr() == rhs.getPtr());
-			// }
-
-			// template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
-			// friend bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
-			// {
-			// 	return (!(lhs.getPtr() == rhs.getPtr()));
-			// }
 	};
-	template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
-	bool operator==(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+
+	template <class Iterator>
+	bool operator== (const reverse_BST_iter<Iterator>& lhs, const reverse_BST_iter<Iterator>& rhs)
 	{
-		return (lhs.getPtr() == rhs.getPtr());
+		return (lhs.base() == rhs.base());
 	}
 
-	template<typename key_type, typename mapped_type, typename Compare, typename Allocator>
-	bool operator!=(const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &lhs, const reverse_BST_iter<key_type, mapped_type, Compare, Allocator> &rhs)
+	template <class Iterator>
+	bool operator!= (const reverse_BST_iter<Iterator>& lhs, const reverse_BST_iter<Iterator>& rhs)
 	{
-		return (!(lhs.getPtr() == rhs.getPtr()));
+		return !(lhs.base() == rhs.base());
 	}
 }
 
