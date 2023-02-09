@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+         #
+#    By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:09:33 by ben               #+#    #+#              #
-#    Updated: 2023/02/09 15:09:26 by jbartkow         ###   ########.fr        #
+#    Updated: 2023/02/09 16:53:52 by bschende         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC			= c++
 
 RM			= rm -fr
 
-CFLAGS		= -Wall -Wextra -Werror -std=c++98 -ggdb3
+CFLAGS		= -Wall -Wextra -Werror -std=c++98
 
 GREEN			=	\033[0;32m
 RED				=	\033[0;31m

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:22:50 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/09 18:59:14 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ namespace ft
 		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())											//*Checked
 			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0)
 		{
-			_container = _alloc.allocate(n);
+			if (n > 0)
+				_container = _alloc.allocate(n);
 			_capacity = n;
 			_end = _container;
 			while (n--)
@@ -94,7 +95,8 @@ namespace ft
 		~vector()
 		{
 			this->clear();
-			this->_alloc.deallocate(this->_container, this->capacity());
+			if (this->capacity() != 0)
+				this->_alloc.deallocate(this->_container, this->capacity());
 		}
 
 		/* Assignment operator */
@@ -102,7 +104,8 @@ namespace ft
 		{
 			if (rhs == *this)
 				return (*this);
-			this->clear();
+			if (this->size() > 0)
+				this->clear();
 			this->insert(this->end(), rhs.begin(), rhs.end());
 			return (*this);
 		}
@@ -212,7 +215,14 @@ namespace ft
 					this->_end++;
 					prev_start++;
 				}
-				this->_alloc.deallocate(prev_start - prev_size, prev_capacity);
+				prev_start = prev_start - prev_size;
+				while (prev_start != prev_end)
+				{
+					_alloc.destroy(prev_start);
+					prev_start++;
+				}
+				if (prev_start)
+					this->_alloc.deallocate(prev_start - prev_size, prev_capacity);
 			}
 		}
 
@@ -433,7 +443,8 @@ namespace ft
 					this->_alloc.construct(new_end - k - 1, *(this->_end - k - 1));
 				for (size_type l = 0; l < this->size(); l++)
 					this->_alloc.destroy(this->_container + l);
-				this->_alloc.deallocate(this->_container, this->capacity());
+				if (this->_container)
+					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
@@ -480,7 +491,8 @@ namespace ft
 					
 				for (size_type l = 0; l < this->size(); l++)
 					this->_alloc.destroy(this->_container + l);
-				this->_alloc.deallocate(this->_container, this->capacity());
+				if (this->_container)
+					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
@@ -516,8 +528,6 @@ namespace ft
 				_container[i] = _container[i + 1];
 				i++;
 			}
-			// if (_container)
-			// 	_alloc.destroy(&_container[i]);
 			_end--;
 			return (it);
 		}
@@ -559,8 +569,8 @@ namespace ft
 				y++;
 			}
 			_end -= i - y;
-			while (y < size())
-				_alloc.destroy(&_container[y]);
+			// while (y < size())
+			// 	_alloc.destroy(&_container[y]);
 			return (it);
 		}
 
