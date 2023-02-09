@@ -6,7 +6,7 @@
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/08 16:07:52 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:45:36 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -509,7 +509,8 @@ namespace ft
 				_container[i] = _container[i + 1];
 				i++;
 			}
-			_alloc.destroy(&_container[i]);
+			// if (_container)
+			// 	_alloc.destroy(&_container[i]);
 			_end--;
 			return (it);
 		}

@@ -6,7 +6,7 @@
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:33 by ben               #+#    #+#             */
-/*   Updated: 2023/02/08 09:55:44 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:47:59 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
 			/* Constructor */
 			explicit stack(const container_type &cont = container_type()): c(cont) {}
 
-			stack(const stack &other): c(other) {}
+			stack(const stack &other): c(other.c) {}
 			
 			/* Deconstructor */
 			~stack() {}
