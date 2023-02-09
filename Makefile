@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ben <ben@student.42.fr>                    +#+  +:+       +#+         #
+#    By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:09:33 by ben               #+#    #+#              #
-#    Updated: 2023/02/05 13:04:28 by ben              ###   ########.fr        #
+#    Updated: 2023/02/09 15:09:26 by jbartkow         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,12 +28,8 @@ RESET			=	\033[0m
 test: $(NAME)
 
 $(NAME): $(OBJS)
-		#${CC} ${CFLAGS} main.cpp -o $(NAME)
-		 ${CC} ${CFLAGS} test_main.cpp -o test_main
-		#  ${CC} ${CFLAGS} main.cpp -o ft_test
-		#  ${CC} ${CFLAGS} main.cpp -o std_test -D STD
-		# ./ft_test > ft_test_file && ./std_test > std_test_file
-		# diff -y ./ft_test_file ./std_test_file
+		${CC} ${CFLAGS} main.cpp -o $(NAME)
+		${CC} ${CFLAGS} main.cpp -o std_test -D STD
 
 performance:
 		${CC} ${CFLAGS} intra_main_ft.cpp -o ftcontainer
@@ -55,6 +51,6 @@ fclean: clean
 		${RM} ${NAME}
 		@echo "$(RED)fcleaned$(RESET)"
 
-re:		fclean test performance difference
+re:		fclean test difference
 
-.PHONY:	test performance
+.PHONY:	test performance difference clean fclean re

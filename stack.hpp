@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:33 by ben               #+#    #+#             */
-/*   Updated: 2023/02/08 16:47:59 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/09 16:24:03 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace ft
 		protected:
 
 			container_type	c;
+
 		public:
 
 			/* Constructor */

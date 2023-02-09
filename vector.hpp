@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/08 16:45:36 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/09 16:22:50 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_VECTOR_HPP
-# define FT_VECTOR_HPP
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
 
 #include <memory>
 #include <iostream>
@@ -461,7 +461,14 @@ namespace ft
 			{
 				pointer new_start = this->_alloc.allocate(this->size() + n);
 				pointer new_end = new_start + this->size() + n;
-				size_type new_capacity = this->size() + n;
+				size_type new_capacity = this->_capacity;
+				if (new_capacity != 0) {
+					while (new_capacity < this->size() + n) {
+						new_capacity = new_capacity * 2;
+					}
+				} else {
+					new_capacity = n;
+				}
 				for (int i = 0; i < &(*position) - this->_container; i++)
 					this->_alloc.construct(new_start + i, *(this->_container + i));
 					
@@ -559,10 +566,6 @@ namespace ft
 
 		void swap(vector &x)
 		{
-			// std::swap(_container, x._container);
-			// std::swap(_end, x._end);
-			// std::swap(_capacity, x._capacity);
-			// std::swap(_alloc, x._alloc);
 			pointer x_start = x._container;
 			pointer x_end = x._end;
 			size_type x_capacity = x._capacity;
