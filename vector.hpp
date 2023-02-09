@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
 /*   Updated: 2023/02/09 18:56:55 by jbartkow         ###   ########.fr       */
@@ -104,7 +104,8 @@ namespace ft
 		{
 			if (rhs == *this)
 				return (*this);
-			this->clear();
+			if (this->size() > 0)
+				this->clear();
 			this->insert(this->end(), rhs.begin(), rhs.end());
 			return (*this);
 		}
@@ -540,8 +541,8 @@ namespace ft
 				y++;
 			}
 			_end -= i - y;
-			while (y < size())
-				_alloc.destroy(&_container[y]);
+			// while (y < size())
+			// 	_alloc.destroy(&_container[y]);
 			return (it);
 		}
 
