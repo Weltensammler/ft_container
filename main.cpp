@@ -6,7 +6,7 @@
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:33:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 15:57:14 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/09 18:08:17 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <stack>
 namespace ft = std;
 #else
-#include "ft_vector.hpp"
-#include "ft_stack.hpp"
-#include "ft_map.hpp"
+#include "vector.hpp"
+#include "stack.hpp"
+#include "map.hpp"
 #include <vector>
 #endif
 
@@ -530,5 +530,6 @@ int main(void)
 	std::cout << "Is stack empty:" << std::endl;
 	std::cout << " - " << dst.empty() << std::endl
 			  << std::endl;
+
 }
 

@@ -6,7 +6,7 @@
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:24:04 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/09 18:49:41 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ namespace ft
 		/* Deconstructor */
 		~map()
 		{
+			this->clear();
 		}
 
 		map &operator=(const map &rhs)
