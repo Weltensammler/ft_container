@@ -6,7 +6,7 @@
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:22:50 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/09 18:56:55 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,14 @@ namespace ft
 		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())											//*Checked
 			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0)
 		{
-			_container = _alloc.allocate(n);
-			_capacity = n;
-			_end = _container;
+			if (n > 0)
+				this->_container = _alloc.allocate(n);
+			this->_capacity = n;
+			this->_end = this->_container;
 			while (n--)
 			{
-				_alloc.construct(_end, val);
-				_end++;
+				_alloc.construct(this->_end, val);
+				this->_end++;
 			}
 		}
 
@@ -94,7 +95,8 @@ namespace ft
 		~vector()
 		{
 			this->clear();
-			this->_alloc.deallocate(this->_container, this->capacity());
+			if (this->capacity() != 0)
+				this->_alloc.deallocate(this->_container, this->capacity());
 		}
 
 		/* Assignment operator */
@@ -212,7 +214,14 @@ namespace ft
 					this->_end++;
 					prev_start++;
 				}
-				this->_alloc.deallocate(prev_start - prev_size, prev_capacity);
+				prev_start = prev_start - prev_size;
+				while (prev_start != prev_end)
+				{
+					_alloc.destroy(prev_start);
+					prev_start++;
+				}
+				if (prev_start)
+					this->_alloc.deallocate(prev_start - prev_size, prev_capacity);
 			}
 		}
 
@@ -433,7 +442,8 @@ namespace ft
 					this->_alloc.construct(new_end - k - 1, *(this->_end - k - 1));
 				for (size_type l = 0; l < this->size(); l++)
 					this->_alloc.destroy(this->_container + l);
-				this->_alloc.deallocate(this->_container, this->capacity());
+				if (this->_container)
+					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
@@ -480,7 +490,8 @@ namespace ft
 					
 				for (size_type l = 0; l < this->size(); l++)
 					this->_alloc.destroy(this->_container + l);
-				this->_alloc.deallocate(this->_container, this->capacity());
+				if (this->_container)
+					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
@@ -489,20 +500,6 @@ namespace ft
 
 		iterator erase(iterator position)											
 		{
-			// pointer pos = &(*position);
-			// this->_alloc.destroy(pos);
-
-			// if(position + 1 == end())
-			// {
-			// 	this->_end--;
-			// 	return pos;
-			// }
-			// iterator it = position;
-			// for (; it + 1 != end(); it++)
-			// 	this->_alloc.construct(&(*it), (*(it + 1)));
-			// this->_alloc.destroy(&(*it));
-			// this->_end--;
-			// return (iterator(pos));
 			iterator it = begin();
 			size_type i = 0;
 			while (it != position)
@@ -516,28 +513,12 @@ namespace ft
 				_container[i] = _container[i + 1];
 				i++;
 			}
-			// if (_container)
-			// 	_alloc.destroy(&_container[i]);
 			_end--;
 			return (it);
 		}
 
 		iterator erase(iterator first, iterator last)
-		{
-			// pointer firstPos = &(*first);
-			// while (first != last)
-			// {
-			// 	this->_alloc.destroy(&(*first));
-			// 	first++;
-			// }
-			// for (int i = 0; i < this->_end - &(*last); i++)
-			// {
-			// 	this->_alloc.construct(firstPos + i, *(&(*last) + i));
-			// 	this->_alloc.destroy(&(*last) + i);
-			// }
-			// this->_end -= &(*last) - firstPos;
-			// return (iterator(firstPos));
-			
+		{	
 			iterator it = begin();
 			size_type i = 0;
 			while (it != first)
@@ -587,9 +568,9 @@ namespace ft
 			size_type size = this->size();
 			for (size_type i = 0; i < size; i++)
 			{
-				this->_end--;
-				this->_alloc.destroy(this->_end);
+				this->_alloc.destroy(&(this->_container[i]));
 			}
+			this->_end = this->_container;
 		}
 
 		allocator_type get_allocator(void) const

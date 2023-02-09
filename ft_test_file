@@ -1,0 +1,505 @@
+#######################################################
+#------------------------ MAP ------------------------#
+#------------------------ FT  ------------------------#
+#######################################################
+
+Insertion and printing using operator[]
+ - This
+ - is
+ - an
+ - entry
+Printing using iterators (from begin to end)
+ - This
+ - is
+ - an
+ - entry
+Printing using iterators (from end to begin)
+ - entry
+ - an
+ - is
+ - This
+Printing from a new map after copying
+ - This
+ - is
+ - an
+ - entry
+Map size
+ - 4
+Is Map empty
+ - 0
+After removing the last element using key
+ - This
+ - is
+ - an
+Map size
+ - 3
+Is Map empty
+ - 0
+After removing first element using iterator
+ - is
+ - an
+Map size
+ - 2
+Is Map empty
+ - 0
+After removing all remaining elements
+Map size
+ - 0
+Is Map empty
+ - 1
+After inserting range from copied Map
+ - This
+ - is
+ - an
+ - entry
+Map size
+ - 4
+Is Map empty
+ - 0
+After inserting with key 8
+ - This
+ - is
+ - an
+ - entry
+ - borgor
+Map size
+ - 5
+Is Map empty
+ - 0
+After inserting with key 6
+ - This
+ - is
+ - an
+ - entry
+ - duck
+ - borgor
+Map size
+ - 6
+Is Map empty
+ - 0
+Using 'find' to get element with key 6
+ - duck
+Using 'find' to get element with key 2
+ - an
+Lower bound of key 3
+ - entry
+Upper bound of key 3
+ - duck
+Traversing with reverse iterator
+ - borgor
+ - duck
+ - entry
+ - an
+ - is
+ - This
+Removing element with key 3, and then checking if previously
+created iterator begin() is still valid
+ - This
+ - is
+ - an
+ - duck
+ - borgor
+comparing iterator to begin (should be the same)
+ - it == begin: 1
+ - it == begin: 0
+comparing iterator to begin (should be different)
+ - it == begin: 0
+ - it == begin: 1
+Checking behavior of ft::make_pair
+ - First: forg
+ - Second: phroge
+Trying to add element with existing key (6)
+ - This
+ - is
+ - an
+ - duck
+ - borgor
+Newly created map
+ - I
+ - hate
+ - containers
+ - (for life)
+Swapping maps and making sure that previously declared iterators are valid
+ - old mp.begin == curent new_mp.begin: 1
+ - old new_mp.begin == curent mp.begin: 1
+Max_size function (calls max_size of
+containers std::allocator)
+ - 576460752303423487
+
+#######################################################
+#----------------------- VECTOR ----------------------#
+#------------------------ FT  ------------------------#
+#######################################################
+
+Creating vector, pushing some elements and
+iterating with iterator
+ - Ronaldo
+ - Messi
+ - Rooney
+ - Reus
+ - Adeyemi
+ - Inserttest
+Vector.front = Ronaldo
+Vector.back = Inserttest
+Vector at
+vector.at(0) = Ronaldo
+vector.at(1) = Messi
+vector.at(2) = Rooney
+vector.at(3) = Reus
+vector.at(4) = Adeyemi
+vector.at(5) = Inserttest
+Printing third element using begin + 2
+ - Rooney
+Printing third element using operator[]
+ - Rooney
+Comparing iterator with const_iterator SUCCESS
+Iterating with reverse_iterators
+ - Inserttest
+ - Adeyemi
+ - Reus
+ - Rooney
+ - Messi
+ - Ronaldo
+Comparing reverse iterator with const_reverse_iterator
+(should be different)
+Vector size
+ - 6
+Vector capacity
+ - 8
+Vector max_size
+ - 768614336404564650
+Vector after pushing 3 new objects
+clear Vector
+fill insert OK
+Vector size
+ - 5
+Vector capacity
+ - 8
+Range insert OK
+Vector size
+ - 10
+Vector capacity
+ - 16
+Es folgt Push_Back
+Vector size
+ - 13
+Vector capacity
+ - 16
+----ft insert test ----
+Vector size
+ - 1
+Vector capacity
+ - 1
+ - 42
+Vector size
+ - 3
+Vector capacity
+ - 3
+ - 21
+ - 21
+ - 42
+Vector size
+ - 4
+Vector capacity
+ - 6
+ - 21
+ - 42
+ - 21
+ - 42
+----std insert test ----
+Vector size
+ - 1
+Vector capacity
+ - 1
+ - 42
+Vector size
+ - 3
+Vector capacity
+ - 3
+ - 21
+ - 21
+ - 42
+Vector size
+ - 4
+Vector capacity
+ - 6
+ - 21
+ - 42
+ - 21
+ - 42
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - test_Container
+ - test_Container
+ - test_Container
+ - test_Container
+ - test_Container
+ - 
+ - 
+ - Griezmann
+Vector size
+ - 13
+Vector capacity
+ - 16
+Vector max_size
+ - 768614336404564650
+After pushing another object
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - test_Container
+ - test_Container
+ - test_Container
+ - test_Container
+ - test_Container
+ - 
+ - 
+ - Griezmann
+ - BVB
+Vector size
+ - 14
+Vector capacity
+ - 16
+Vector max_size
+ - 768614336404564650
+After popping the last object
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - test_Container
+ - test_Container
+ - test_Container
+ - test_Container
+ - test_Container
+ - 
+ - 
+ - Griezmann
+Vector size
+ - 13
+Vector capacity
+ - 16
+Vector max_size
+ - 768614336404564650
+After resizing to 8
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - test_Container
+ - test_Container
+ - test_Container
+Vector size
+ - 8
+Vector capacity
+ - 16
+Vector max_size
+ - 768614336404564650
+After resizing to 32
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - Insert_value
+ - test_Container
+ - test_Container
+ - test_Container
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+ - 
+Vector size
+ - 32
+Vector capacity
+ - 32
+Vector max_size
+ - 768614336404564650
+Vector after using assign (iter) to change contents
+ - 42
+ - 42
+ - 42
+ - 42
+ - 42
+ - 42
+ - 42
+ - 42
+Vector after using assign (fill) to change contents
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+ - Test
+Vector size
+ - 15
+Vector capacity
+ - 32
+Vector max_size
+ - 768614336404564650
+After resizing to 4
+ - Test
+ - Test
+ - Test
+ - Test
+Vector size
+ - 4
+Vector capacity
+ - 32
+Vector max_size
+ - 768614336404564650
+Changing first and last element of vector using operator[]
+ - PSG
+ - Test
+ - Test
+ - ManU
+Vector size
+ - 4
+Vector capacity
+ - 32
+Vector max_size
+ - 768614336404564650
+Return value of front()
+ - PSG
+Return value of back()
+ - ManU
+Capacity after using reserve(42)
+ - 42
+New vector
+ - Ferencvaros
+ - Test
+ - Budapest
+ - ManU
+New vector after swapping with old vector
+iterated with old iterator to make sure its valid
+ - PSG
+
+ - Test
+
+ - Test
+
+ - ManU
+
+#######################################################
+#----------------------- STACK -----------------------#
+#------------------------ FT  ------------------------#
+#######################################################
+
+Is new stack empty:
+ - 1
+Stack size:
+ - 0
+Top after pushing some elements:
+ - 42
+Is stack empty:
+ - 0
+Stack size:
+ - 3
+Top after popping an element:
+ - 123
+Is stack empty:
+ - 0
+Stack size:
+ - 2
+Top after popping an element:
+ - 21
+Is stack empty:
+ - 0
+Stack size:
+ - 1
+Size after popping last element:
+ - 0
+Is stack empty:
+ - 1
+
+Stack using std::list as underlying container
+Is new stack empty:
+ - 1
+Stack size:
+ - 0
+Top after pushing some elements:
+ - 3
+Is stack empty:
+ - 0
+Stack size:
+ - 3
+Top after popping an element:
+ - 2
+Is stack empty:
+ - 0
+Stack size:
+ - 2
+Top after popping an element:
+ - 1
+Is stack empty:
+ - 0
+Stack size:
+ - 1
+Size after popping last element:
+ - 0
+Is stack empty:
+ - 1
+
+Stack using std::deque as underlying container
+Is new stack empty:
+ - 1
+Stack size:
+ - 0
+Top after pushing some elements:
+ - 3
+Is stack empty:
+ - 0
+Stack size:
+ - 3
+Top after popping an element:
+ - 2
+Is stack empty:
+ - 0
+Stack size:
+ - 2
+Top after popping an element:
+ - 1
+Is stack empty:
+ - 0
+Stack size:
+ - 1
+Size after popping last element:
+ - 0
+Is stack empty:
+ - 1
+
