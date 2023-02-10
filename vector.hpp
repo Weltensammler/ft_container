@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/10 11:50:47 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/10 12:10:20 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ namespace ft
 		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())											//*Checked
 			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0)
 		{
+			if (n > this->max_size())
+				throw std::length_error("vector::fill_constructor");
 			if (n > 0)
 				this->_container = _alloc.allocate(n);
 			this->_capacity = n;
