@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 18:56:55 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:50:47 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,9 @@ namespace ft
 					typename enable_if<!is_integral<InputIterator>::value>::type* = NULL)
 		{
 			this->clear();
+			// std::cout << "SIZE VORHER: " << this->size() << std::endl;
 			size_type dist = ft::distance(first, last);
+			// std::cout << "DISTANCE: " << dist << std::endl;
 			if (_capacity >= dist)
 			{
 				while (first != last)
@@ -294,11 +296,16 @@ namespace ft
 			}
 			else
 			{
+				// std::cout << "ELSE" << std::endl;
 				pointer new_start = this->_alloc.allocate(dist);
 				pointer new_end = new_start;
 				size_type new_capacity = dist;
+				// std::cout << "First == Last ? " << (first == last) << std::endl;
+				// std::cout << "Pointer first: " << (&(*first)) << std::endl;
+				// std::cout << "Pointer last: " << (*last) << std::endl;
 				while (first != last)
 				{
+					// std::cout << "WHILE LOOP" << std::endl;
 					this->_alloc.construct(new_end, *first);
 					first++;
 					new_end++;
@@ -308,7 +315,9 @@ namespace ft
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
+				// std::cout << "SIZE MITTENDRIN: " << new_end - new_start << std::endl;
 			}
+			// std::cout << "SIZE NACHHER: " << this->size() << std::endl;
 		}
 
 		/* Fill Assign */
@@ -508,13 +517,13 @@ namespace ft
 				i++;
 				it++;
 			}
-			_alloc.destroy(&_container[i]);
+			this->_alloc.destroy(&(this->_container[i]));
 			while ((i + 1) < size())
 			{
-				_container[i] = _container[i + 1];
+				this->_container[i] = this->_container[i + 1];
 				i++;
 			}
-			_end--;
+			this->_end--;
 			return (it);
 		}
 
@@ -530,17 +539,17 @@ namespace ft
 			size_type y = i;
 			while (first != last)
 			{
-				_alloc.destroy(&_container[i]);
+				this->_alloc.destroy(&(this->_container[i]));
 				i++;
 				first++;
 			}
 			while (i < size())
 			{
-				_container[y] = _container[i];
+				this->_container[y] = this->_container[i];
 				i++;
 				y++;
 			}
-			_end -= i - y;
+			this->_end -= i - y;
 			// while (y < size())
 			// 	_alloc.destroy(&_container[y]);
 			return (it);
