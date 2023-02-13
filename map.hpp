@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 18:49:41 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:32:38 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ namespace ft
 
 		const mapped_type &at(const key_type &key) const
 		{
-			iterator tmp = find(key);
+			const_iterator tmp = find(key);
 
 			if (tmp == end())
 				throw std::out_of_range("map::at");

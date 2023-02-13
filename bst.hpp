@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:23:13 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:31:14 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ namespace ft
 				return (*this);
 			}
 
-			~BST() {}
+			~BST() {
+			}
 
 			void setCompandAlloc(key_compare comp,allocator_type alloc) {_comp = comp; _alloc = alloc;}
 

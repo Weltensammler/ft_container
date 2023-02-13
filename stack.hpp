@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:33 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:24:03 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:49:29 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ namespace ft
 	{
 		public:
 
-			typedef	T				value_type;
-			typedef Container		container_type;
-			typedef	std::size_t		size_type;
+			typedef	T											value_type;
+			typedef Container									container_type;
+			typedef	std::size_t									size_type;
+			typedef typename container_type::pointer			pointer;
+			typedef typename container_type::const_pointer		const_pointer;
+			typedef typename container_type::reference			reference;
+			typedef typename container_type::const_reference	const_reference;
 		
 		protected:
 

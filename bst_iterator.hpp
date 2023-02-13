@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:24:13 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:23:06 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

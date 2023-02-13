@@ -6,9 +6,11 @@
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:33:09 by ben               #+#    #+#             */
-/*   Updated: 2023/02/03 14:03:519 by bschende         ###   ########.fr       */
+/*   Updated: 2023/02/13 18:22:48 by bschende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
@@ -204,7 +206,7 @@ namespace ft
 			return	(iter - a);
 		}
 
-	template <class Iterator>
+	template < class Iterator >
 	class reverse_Iterator
 	{
 
@@ -216,6 +218,14 @@ namespace ft
 			typedef typename iterator_traits<Iterator>::pointer				pointer;
 			typedef typename iterator_traits<Iterator>::reference			reference;
 			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
+		// public:
+		// 	typedef T													iterator_type;
+		// 	typedef typename iterator_traits<T*>::value_type 			value_type;
+		// 	typedef typename iterator_traits<T*>::difference_type		difference_type;
+		// 	typedef typename iterator_traits<T*>::pointer				pointer;
+		// 	typedef typename iterator_traits<T*>::reference 			reference;
+		// 	typedef typename iterator_traits<T*>::iterator_category		iterator_category;
+			
 		
 		private:
 
@@ -245,7 +255,7 @@ namespace ft
 			reference operator*(void) const
 			{
 				Iterator temp = this->_iter;
-				temp--;
+				temp++;
 				return (*temp);
 			}
 
