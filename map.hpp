@@ -4,9 +4,9 @@
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/13 16:32:38 by bschende         ###   ########.fr       */
+/*                                                +#+#+#+#+#+   +#+           *
+/*   Created: 2022/11/24 16:32:27 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 17:18:38 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ namespace ft
 		/* Copy Constructor */
 		map(const map &other)
 		{
-			// std::cout << "Map = operator" << std::endl;
 			_bst.setCompandAlloc(_comp, _alloc);
 			_bst.copyTree(other._bst.getToRoot());
 		}
@@ -82,7 +81,6 @@ namespace ft
 
 		map &operator=(const map &rhs)
 		{
-			// std::cout << "Map = operator" << std::endl;
 			if (*this == rhs)
 				return (*this);
 			clear();

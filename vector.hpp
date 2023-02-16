@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:32:44 by ben               #+#    #+#             */
-/*   Updated: 2023/02/13 18:04:40 by bschende         ###   ########.fr       */
+/*   Created: 2022/11/24 16:32:44 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 18:52:02 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ namespace ft
 	public:
 
 		/* Default constructor */
-		explicit vector(const allocator_type &alloc = allocator_type())																								//*Checked
-			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0) {}
+		explicit vector(const allocator_type &alloc = allocator_type())
+			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0) {
+				std::cout << "Default constructor called" << std::endl;
+			}
 
 		/* Fill constructor */
-		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())											//*Checked
+		explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
 			: _alloc(alloc), _container(NULL), _end(NULL), _capacity(0)
 		{
+			std::cout << "Fill constructor called" << std::endl;
 			if (n > this->max_size())
 				throw std::length_error("vector::fill_constructor");
 			if (n > 0)
@@ -71,10 +74,11 @@ namespace ft
 		/* Range constructor */
 		/* enable_if is needed because range constructor is a better match then fill constructor (for example two numbers)*/
 		template<class InputIterator>
-		vector(InputIterator first, InputIterator last,																											//*Checked
+		vector(InputIterator first, InputIterator last,
 				const allocator_type &alloc = allocator_type(),
 				typename enable_if<!is_integral<InputIterator>::value>::type* = NULL) : _alloc(alloc)
 		{
+			std::cout << "Range constructor called" << std::endl;
 			this->_alloc = alloc;
 			this->_capacity = ft::distance(first, last);
 			this->_container = _alloc.allocate(this->_capacity);
@@ -87,8 +91,28 @@ namespace ft
 			}
 		}
 
+		// /* Range constructor */
+		// /* enable_if is needed because range constructor is a better match then fill constructor (for example two numbers)*/
+		// /* Second enable if is needed to differ between streambuf_iterator and "normal" iterator*/
+		// template<class InputIterator>
+		// vector(InputIterator first, InputIterator last,
+		// 		const allocator_type &alloc = allocator_type(),
+		// 		typename enable_if<!is_integral<InputIterator>::value>::type* = NULL) : _alloc(alloc)
+		// {
+		// 	this->_alloc = alloc;
+		// 	this->_capacity = ft::distance(first, last);
+		// 	this->_container = _alloc.allocate(this->_capacity);
+		// 	this->_end = this->_container;
+		// 	while (first != last)
+		// 	{
+		// 		_alloc.construct(this->_end, *first);
+		// 		first++;
+		// 		this->_end++;
+		// 	}
+		// }
+
 		/* Copy Constructor */
-		vector(const vector &rhs) : _alloc(rhs._alloc), _container(NULL), _end(NULL), _capacity(0)																	//*Checked
+		vector(const vector &rhs) : _alloc(rhs._alloc), _container(NULL), _end(NULL), _capacity(0)
 		{
 			this->insert(this->begin(), rhs.begin(), rhs.end());
 		}
@@ -97,12 +121,13 @@ namespace ft
 		~vector()
 		{
 			this->clear();
+			std::cout << "Nach clear" << std::endl;
 			if (this->capacity() != 0)
 				this->_alloc.deallocate(this->_container, this->capacity());
 		}
 
 		/* Assignment operator */
-		vector &operator=(const vector &rhs)																														//*Checked
+		vector &operator=(const vector &rhs)
 		{
 			if (rhs == *this)
 				return (*this);
@@ -112,19 +137,17 @@ namespace ft
 			return (*this);
 		}
 
-		/* returns iterator of first element */
-		iterator begin(void)																											//*Checked
+		iterator begin(void)
 		{
 			return (iterator(this->_container));
 		}
 
-		/* const version of the above */
 		const_iterator begin(void) const
 		{
 			return (const_iterator(this->_container));
 		}
 
-		iterator end(void)																		//*Checked
+		iterator end(void)
 		{
 			if (this->empty())
 				return (this->begin());
@@ -138,7 +161,7 @@ namespace ft
 			return (const_iterator(this->_end));
 		}
 
-		reverse_iterator rbegin(void)											//*Checked
+		reverse_iterator rbegin(void)
 		{
 			return (reverse_iterator(this->_end));
 		}
@@ -148,7 +171,7 @@ namespace ft
 			return (reverse_iterator(this->_end));
 		}
 
-		reverse_iterator rend(void)											//*Checked
+		reverse_iterator rend(void)
 		{
 			return (reverse_iterator(this->_container));
 		}
@@ -158,17 +181,17 @@ namespace ft
 			return (reverse_iterator(this->_container));
 		}
 
-		size_type size(void) const											//*Checked
+		size_type size(void) const
 		{
 			return (this->_end - this->_container);
 		}
 
-		size_type max_size(void) const											//*Checked
+		size_type max_size(void) const
 		{
 			return (allocator_type().max_size());
 		}
 
-		void resize(size_type n, value_type val = value_type())											//*Checked
+		void resize(size_type n, value_type val = value_type())
 		{
 			if (n > this->max_size())
 				throw std::length_error("vector::resize");
@@ -184,20 +207,19 @@ namespace ft
 				this->insert(this->end(), n - this->size(), val);
 		}
 
-		/* returns the capacity of the container */
-		size_type capacity(void) const											//*Checked
+		size_type capacity(void) const
 		{
 			return (this->_capacity);
 		}
 
-		bool empty(void) const											//*Checked
+		bool empty(void) const
 		{
 			if (this->size() == 0)
 				return (true);
 			return (false);
 		}
 
-		void reserve(size_type n)											//*Checked
+		void reserve(size_type n)
 		{
 			if (n > this->max_size())
 				throw std::length_error("vector::reserve");
@@ -228,7 +250,7 @@ namespace ft
 			}
 		}
 
-		reference operator[](size_type n)											//*Checked
+		reference operator[](size_type n)
 		{
 			return (*(this->_container + n));
 		}
@@ -238,16 +260,13 @@ namespace ft
 			return (*(this->_container + n));
 		}
 
-		/* Returns a reference to the element at position n in the vector 	*/
-		/* https://cplusplus.com/reference/vector/vector/at/				*/
-		reference at(size_type n)													//*Checked
+		reference at(size_type n)
 		{
 			if (n >= this->size())
 				throw std::out_of_range("Out of Range");
 			return ((*this)[n]);
 		}
 
-		/* const version of above */
 		const_reference at(size_type n) const
 		{
 			if (n >= this->size())
@@ -255,7 +274,7 @@ namespace ft
 			return ((*this)[n]);
 		}
 
-		reference front(void)											//*Checked
+		reference front(void)
 		{
 			return (*this->_container);
 		}
@@ -265,28 +284,22 @@ namespace ft
 			return (*this->_container);
 		}
 
-		/* reference to last element in array */
-		reference back(void)											//*Checked
+		reference back(void)
 		{
 			return (*(this->_end - 1));
 		}
 
-		/* const version of the above */
 		const_reference back(void) const
 		{
 			return (*(this->_end - 1));
 		}
 
-		/* Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly. 	*/
-		/* https://cplusplus.com/reference/vector/vector/assign/ 													*/
 		template<class InputIterator>
-		void assign(InputIterator first, InputIterator last,											//*Checked
+		void assign(InputIterator first, InputIterator last,
 					typename enable_if<!is_integral<InputIterator>::value>::type* = NULL)
 		{
 			this->clear();
-			// std::cout << "SIZE VORHER: " << this->size() << std::endl;
 			size_type dist = ft::distance(first, last);
-			// std::cout << "DISTANCE: " << dist << std::endl;
 			if (_capacity >= dist)
 			{
 				while (first != last)
@@ -298,16 +311,11 @@ namespace ft
 			}
 			else
 			{
-				// std::cout << "ELSE" << std::endl;
 				pointer new_start = this->_alloc.allocate(dist);
 				pointer new_end = new_start;
 				size_type new_capacity = dist;
-				// std::cout << "First == Last ? " << (first == last) << std::endl;
-				// std::cout << "Pointer first: " << (&(*first)) << std::endl;
-				// std::cout << "Pointer last: " << (*last) << std::endl;
 				while (first != last)
 				{
-					// std::cout << "WHILE LOOP" << std::endl;
 					this->_alloc.construct(new_end, *first);
 					first++;
 					new_end++;
@@ -317,13 +325,10 @@ namespace ft
 				this->_container = new_start;
 				this->_end = new_end;
 				this->_capacity = new_capacity;
-				// std::cout << "SIZE MITTENDRIN: " << new_end - new_start << std::endl;
 			}
-			// std::cout << "SIZE NACHHER: " << this->size() << std::endl;
 		}
 
-		/* Fill Assign */
-		void assign(size_type n, const value_type &val)											//*Checked
+		void assign(size_type n, const value_type &val)
 		{
 			this->clear();
 			if (n == 0)
@@ -353,7 +358,7 @@ namespace ft
 			}
 		}
 
-		void push_back(const value_type &val)											//*Checked
+		void push_back(const value_type &val)
 		{
 			if (this->size() == this->_capacity)
 			{
@@ -368,13 +373,13 @@ namespace ft
 			this->_end++;
 		}
 
-		void pop_back(void)																	//*Checked
+		void pop_back(void)
 		{
 			this->_alloc.destroy(&(this->back()));
 			this->_end--;
 		}
 
-		iterator insert(iterator position, const value_type &val)											//*Checked
+		iterator insert(iterator position, const value_type &val)
 		{
 			size_type pos = &(*position) - this->_container;
 			if (this->_capacity - size() >= this->size() + 1)
@@ -411,7 +416,7 @@ namespace ft
 			return (iterator(this->_container + pos));
 		}
 
-		void insert(iterator position, size_type n, const value_type &val)											//*Checked
+		void insert(iterator position, size_type n, const value_type &val)
 		{
 			if (n == 0)
 				return ;
@@ -433,7 +438,7 @@ namespace ft
 			{
 				size_type new_capacity;
 				if (this->size() == 0)
-					new_capacity = 0;
+					new_capacity = n;
 				else
 					new_capacity = size() + n;
 				pointer new_start = this->_alloc.allocate(new_capacity);
@@ -463,11 +468,11 @@ namespace ft
 		}
 
 		template<class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last,											//*Checked
+		void insert(iterator position, InputIterator first, InputIterator last,
 					typename enable_if<!is_integral<InputIterator>::value>::type* = NULL)
 		{
 			size_type n = ft::distance(first, last);
-			if (this->_capacity >= n + size())
+			if (this->_capacity >= n + this->size())
 			{
 				for (size_type i = 0; i < (this->size() - (&(*position) - this->_container)); i++)
 					this->_alloc.construct(this->_end - i + n - 1, *(this->_end - i - 1));
@@ -481,16 +486,15 @@ namespace ft
 			}
 			else
 			{
-				pointer new_start = this->_alloc.allocate(this->size() + n);
+				size_type allocation_size;
+				if (this->_capacity == 0)
+					 allocation_size = n;
+				else
+					allocation_size = this->_capacity;
+				while (allocation_size < (this->size() + n))
+					allocation_size = allocation_size * 2;
+				pointer new_start = this->_alloc.allocate(allocation_size);
 				pointer new_end = new_start + this->size() + n;
-				size_type new_capacity = this->_capacity;
-				if (new_capacity != 0) {
-					while (new_capacity < this->size() + n) {
-						new_capacity = new_capacity * 2;
-					}
-				} else {
-					new_capacity = n;
-				}
 				for (int i = 0; i < &(*position) - this->_container; i++)
 					this->_alloc.construct(new_start + i, *(this->_container + i));
 					
@@ -506,7 +510,7 @@ namespace ft
 					this->_alloc.deallocate(this->_container, this->capacity());
 				this->_container = new_start;
 				this->_end = new_end;
-				this->_capacity = new_capacity;
+				this->_capacity = allocation_size;
 			}
 		}
 
@@ -514,11 +518,16 @@ namespace ft
 		{
 			iterator it = begin();
 			size_type i = 0;
+			size_type j = 0;
 			while (it != position)
 			{
 				i++;
 				it++;
 			}
+			//
+			std::cout << "Position: " << &(*position) << std::endl;
+			std::cout << "Destroy: " << &this->_container[i] << std::endl;
+			j = i;
 			this->_alloc.destroy(&(this->_container[i]));
 			while ((i + 1) < size())
 			{
@@ -526,7 +535,8 @@ namespace ft
 				i++;
 			}
 			this->_end--;
-			return (it);
+			std::cout << "Return: " << &(*it) << std::endl;
+			return (&(this->_container[j]));
 		}
 
 		iterator erase(iterator first, iterator last)
@@ -552,8 +562,6 @@ namespace ft
 				y++;
 			}
 			this->_end -= i - y;
-			// while (y < size())
-			// 	_alloc.destroy(&_container[y]);
 			return (it);
 		}
 
@@ -580,6 +588,7 @@ namespace ft
 			size_type size = this->size();
 			for (size_type i = 0; i < size; i++)
 			{
+				std::cout << "Destroy: " << &this->_container[i] << std::endl;
 				this->_alloc.destroy(&(this->_container[i]));
 			}
 			this->_end = this->_container;

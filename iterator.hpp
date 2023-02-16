@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   iterator.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:33:09 by ben               #+#    #+#             */
-/*   Updated: 2023/02/13 18:22:48 by bschende         ###   ########.fr       */
+/*   Created: 2022/11/24 16:33:09 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 17:44:19 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,6 @@
 
 namespace ft
 {
-	struct input_iterator_tag											{};
-	struct output_iterator_tag											{};
-	struct forward_iterator_tag			: input_iterator_tag			{};
-	struct bidirectional_iterator_tag	: forward_iterator_tag			{};
-	struct random_access_iterator_tag	: bidirectional_iterator_tag	{};
-	
 	template<class Iterator>
 	struct iterator_traits
 	{
@@ -45,7 +39,7 @@ namespace ft
 		typedef T														value_type;
 		typedef T*														pointer;
 		typedef T&														reference;
-		typedef random_access_iterator_tag								iterator_category;
+		typedef std::random_access_iterator_tag							iterator_category;
 	};
 
 	template<typename T>
@@ -55,7 +49,7 @@ namespace ft
 		typedef T														value_type;
 		typedef const T*												pointer;
 		typedef const T&												reference;
-		typedef random_access_iterator_tag								iterator_category;
+		typedef std::random_access_iterator_tag							iterator_category;
 	};
 
 	template< typename T>
@@ -412,7 +406,6 @@ namespace ft
 		return (first2 != last2);
 	}
 
-	/* enable_if */
 	template <bool, typename T = void>
 	struct enable_if {};
 
@@ -422,7 +415,6 @@ namespace ft
 		typedef T type;
 	};
 
-	/* is_integral */
 	template <class T, T v>
 	struct integral_constant
 	{
@@ -434,10 +426,8 @@ namespace ft
 	typedef integral_constant<bool, true>	true_type;
 	typedef integral_constant<bool, false>	false_type;
 
-	//non-itegral types
 	template <class T> struct is_integral : false_type {};
 
-	//integral types
 	template <> struct is_integral<bool>					: true_type {};
 	template <> struct is_integral<char>					: true_type {};
 	template <> struct is_integral<wchar_t>					: true_type {};
@@ -523,7 +513,7 @@ namespace ft
 		return (pair<T1, T2>(x, y));
 	}
 
-		template <bool flag, class IsTrueType, class IsFalseType>
+	template <bool flag, class IsTrueType, class IsFalseType>
 	struct choose;
 
 	template <class IsTrueType, class IsFalseType>
