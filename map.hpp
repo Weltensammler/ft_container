@@ -3,8 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           *
 /*   Created: 2022/11/24 16:32:27 by jbartkow          #+#    #+#             */
 /*   Updated: 2023/02/16 17:18:38 by jbartkow         ###   ########.fr       */
 /*                                                                            */
