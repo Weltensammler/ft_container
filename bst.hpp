@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:32:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 16:23:13 by jbartkow         ###   ########.fr       */
+/*   Created: 2022/11/24 16:32:21 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 17:19:16 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "iterator.hpp"
 #include <cstdio>
-#include "map.hpp" //
+#include "map.hpp"
 
 namespace ft
 {
@@ -73,7 +73,8 @@ namespace ft
 				return (*this);
 			}
 
-			~BST() {}
+			~BST() {
+			}
 
 			void setCompandAlloc(key_compare comp,allocator_type alloc) {_comp = comp; _alloc = alloc;}
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:33:21 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 18:08:17 by jbartkow         ###   ########.fr       */
+/*   Created: 2022/11/24 16:33:21 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 17:18:49 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int main(void)
 		std::cout << " - " << mp.max_size() << std::endl
 				  << std::endl;
 	}
-	// {
+
 	std::cout << "#######################################################" << std::endl;
 	std::cout << "#----------------------- VECTOR ----------------------#" << std::endl;
 #ifdef STD
@@ -226,6 +226,8 @@ int main(void)
 	std::cout << "Vector after pushing 3 new objects" << std::endl;
 	std::cout << "clear Vector" << std::endl;
 	vec.clear();
+	std::cout << "Vector capacity" << std::endl;
+	std::cout << " - " << vec.capacity() << std::endl;
 	ft::vector<std::string> vec_test(5, "test_Container");
 	vec.insert(vec.end(), 5, "Insert_value");
 	std::cout << "fill insert OK" << std::endl;
@@ -247,7 +249,6 @@ int main(void)
 	std::cout << " - " << vec.size() << std::endl;
 	std::cout << "Vector capacity" << std::endl;
 	std::cout << " - " << vec.capacity() << std::endl;
-	std::cout << "----ft insert test ----" << std::endl;
 	ft::vector<int> vct2;
 	ft::vector<int>::iterator it2 = vct2.begin();
 	vct2.insert(vct2.end(), 42);
@@ -530,6 +531,5 @@ int main(void)
 	std::cout << "Is stack empty:" << std::endl;
 	std::cout << " - " << dst.empty() << std::endl
 			  << std::endl;
-
 }
 

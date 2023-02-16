@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:32:27 by ben               #+#    #+#             */
-/*   Updated: 2023/02/09 18:49:41 by jbartkow         ###   ########.fr       */
+/*   Created: 2022/11/24 16:32:27 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 17:18:38 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ namespace ft
 		/* Copy Constructor */
 		map(const map &other)
 		{
-			// std::cout << "Map = operator" << std::endl;
 			_bst.setCompandAlloc(_comp, _alloc);
 			_bst.copyTree(other._bst.getToRoot());
 		}
@@ -82,7 +81,6 @@ namespace ft
 
 		map &operator=(const map &rhs)
 		{
-			// std::cout << "Map = operator" << std::endl;
 			if (*this == rhs)
 				return (*this);
 			clear();
@@ -129,7 +127,7 @@ namespace ft
 
 		const mapped_type &at(const key_type &key) const
 		{
-			iterator tmp = find(key);
+			const_iterator tmp = find(key);
 
 			if (tmp == end())
 				throw std::out_of_range("map::at");

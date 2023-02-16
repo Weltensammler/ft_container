@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+         #
+#    By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/11/24 16:09:33 by ben               #+#    #+#              #
-#    Updated: 2023/02/09 16:53:52 by bschende         ###   ########.fr        #
+#    Created: 2022/11/24 16:09:33 by jbartkow          #+#    #+#              #
+#    Updated: 2023/02/14 17:58:01 by jbartkow         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

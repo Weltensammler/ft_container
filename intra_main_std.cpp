@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intra_main_std.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:34:09 by ben               #+#    #+#             */
-/*   Updated: 2022/11/24 16:34:11 by ben              ###   ########.fr       */
+/*   Created: 2022/11/24 16:34:09 by jbartkow          #+#    #+#             */
+/*   Updated: 2023/02/16 17:19:04 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 	#include <vector>
 	namespace ft = std;
 #else
-	#include "ft_stack.hpp"
-	#include "ft_vector.hpp"
-	#include "ft_map.hpp"
+	#include "stack.hpp"
+	#include "vector.hpp"
+	#include "map.hpp"
 #endif
 
 #include <stdlib.h>
