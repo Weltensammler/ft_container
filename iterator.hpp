@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   iterator.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:33:09 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/02/16 17:44:19 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:27:08 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
@@ -20,10 +18,10 @@
 
 namespace ft
 {
+	
 	template<class Iterator>
 	struct iterator_traits
 	{
-
 		typedef typename Iterator::difference_type						difference_type;
 		typedef typename Iterator::value_type							value_type;
 		typedef typename Iterator::pointer								pointer;
@@ -39,7 +37,7 @@ namespace ft
 		typedef T														value_type;
 		typedef T*														pointer;
 		typedef T&														reference;
-		typedef std::random_access_iterator_tag							iterator_category;
+		typedef std::bidirectional_iterator_tag							iterator_category;
 	};
 
 	template<typename T>
@@ -49,18 +47,18 @@ namespace ft
 		typedef T														value_type;
 		typedef const T*												pointer;
 		typedef const T&												reference;
-		typedef std::random_access_iterator_tag							iterator_category;
+		typedef std::bidirectional_iterator_tag							iterator_category;
 	};
 
 	template< typename T>
 	class Iterator
 	{
 		public:
-			typedef typename iterator_traits<T*>::iterator_category		iterator_category;
-			typedef typename iterator_traits<T*>::value_type 			value_type;
-			typedef typename iterator_traits<T*>::reference 			reference;
-			typedef typename iterator_traits<T*>::pointer				pointer;
 			typedef typename iterator_traits<T*>::difference_type		difference_type;
+			typedef typename iterator_traits<T*>::value_type 			value_type;
+			typedef typename iterator_traits<T*>::pointer				pointer;
+			typedef typename iterator_traits<T*>::reference 			reference;
+			typedef typename iterator_traits<T*>::iterator_category		iterator_category;
 			typedef T													iterator_type;
 
 		private:
@@ -74,7 +72,7 @@ namespace ft
 
 			~Iterator() {}
 
-			template <class U>
+			template <typename U>
 			Iterator(const Iterator<U>& src) : _ptr(src.base()) {
 			}
 
@@ -200,7 +198,7 @@ namespace ft
 			return	(iter - a);
 		}
 
-	template < class Iterator >
+	template <class Iterator>
 	class reverse_Iterator
 	{
 
@@ -212,14 +210,6 @@ namespace ft
 			typedef typename iterator_traits<Iterator>::pointer				pointer;
 			typedef typename iterator_traits<Iterator>::reference			reference;
 			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
-		// public:
-		// 	typedef T													iterator_type;
-		// 	typedef typename iterator_traits<T*>::value_type 			value_type;
-		// 	typedef typename iterator_traits<T*>::difference_type		difference_type;
-		// 	typedef typename iterator_traits<T*>::pointer				pointer;
-		// 	typedef typename iterator_traits<T*>::reference 			reference;
-		// 	typedef typename iterator_traits<T*>::iterator_category		iterator_category;
-			
 		
 		private:
 
@@ -249,7 +239,7 @@ namespace ft
 			reference operator*(void) const
 			{
 				Iterator temp = this->_iter;
-				temp++;
+				temp--;
 				return (*temp);
 			}
 
@@ -378,17 +368,16 @@ namespace ft
 	bool lexicographical_compare(	InputIterator1 first1, InputIterator1 last1,
 									InputIterator2 first2, InputIterator2 last2)
 	{
-		while (first1 != last1)
+		for (; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2)
 		{
-			if (first2 == last2 || *first2 < *first1)
-				return (false);
-			else if (*first1 < *first2)
-				return (true);
-			first1++;
-			first2++;
+			if (*first1 < *first2)
+				return true;
+			if (*first2 < *first1)
+				return false;
 		}
-		return (first2 != last2);
-	}
+	
+		return (first1 == last1) && (first2 != last2);
+	};
 
 	template <class InputIterator1, class InputIterator2, class Compare>
 	bool lexicographical_compare(	InputIterator1 first1, InputIterator1 last1,
@@ -425,6 +414,14 @@ namespace ft
 
 	typedef integral_constant<bool, true>	true_type;
 	typedef integral_constant<bool, false>	false_type;
+
+	template <typename T, typename U>
+	struct is_same : false_type
+	{};
+
+	template <typename T>
+	struct is_same<T, T> : true_type
+	{};
 
 	template <class T> struct is_integral : false_type {};
 
@@ -468,6 +465,7 @@ namespace ft
 				this->second = rhs.second;
 				return (*this);
 			}
+			
 			~pair(void) {}
 	};
 
@@ -486,7 +484,7 @@ namespace ft
 	template <class T1, class T2>
 	bool operator<(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
 	{
-		return (lhs.first < rhs.first || lhs.second < rhs.second);
+		return (lhs.first < rhs.first || (!(rhs.first<lhs.first) && lhs.second < rhs.second));
 	}
 
 	template <class T1, class T2>
@@ -528,7 +526,7 @@ namespace ft
 		typedef IsFalseType type;
 	};
 
-		template <class InputIterator1, class InputIterator2>
+	template <class InputIterator1, class InputIterator2>
 	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
 		for (; first1 != last1; ++first1, ++first2)

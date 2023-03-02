@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+         #
+#    By: ben <ben@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/24 16:09:33 by jbartkow          #+#    #+#              #
-#    Updated: 2023/02/14 17:58:01 by jbartkow         ###   ########.fr        #
+#    Updated: 2023/02/17 11:12:09 by ben              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,8 @@ performance:
 		@time -p ./stdcontainer 42
 
 difference:
-		./ft_test > ft_test_file && ./std_test > std_test_file
-		diff -y ./ft_test_file ./std_test_file
+		@./ft_test > ft_test_file && ./std_test > std_test_file
+		@diff -y ./ft_test_file ./std_test_file
 
 clean:
 		${RM} $(OBJS) ft_test ft_test_file std_test std_test_file ftcontainer stdcontainer

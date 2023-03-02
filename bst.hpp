@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:21 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/02/16 17:19:16 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:50:18 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,19 +151,29 @@ namespace ft
 				if (nd == NULL)
 					nd = _bst;
 				if (nd->right)
+				{
 					_clear(nd->right);
+				}
 				if (nd->left)
+				{
 					_clear(nd->left);
+				}
 				if (_isLeaf(nd))
 				{
 					if (nd->parent && nd->parent->right == nd)
 						nd->parent->right = NULL;
 					else if (nd->parent && nd->parent->left == nd)
 						nd->parent->left = NULL;
-					_alloc_node.deallocate(nd, 1);
+					if (nd)
+					{
+						_alloc.destroy(&(nd->data));
+						_alloc_node.deallocate(nd, 1);
+					}
 				}
 				if (nd == _bst)
+				{
 					_bst = NULL;
+				}
 				_size--;
 			}
 
@@ -206,7 +216,8 @@ namespace ft
 						found = found->right;
 					}
 				}
-				found = new_node(value, tmp);
+				if (!found)
+					found = new_node(value, tmp);
 				if (this->_comp(value.first, tmp->data.first))
 					tmp->left = found;
 				else
@@ -251,10 +262,66 @@ namespace ft
 					current = current->right;
 				return (current);
 			}
-
-			void changeData(_node* &curr, const value_type &val)
+			
+			void changeData(_node* &curr, _node* &val, int i)
 			{
-				_alloc.construct(&(curr->data), val);
+				if (i == 1)
+				{
+					if (val->left)
+					{
+						val->left->parent = val->parent;
+						if (val == val->parent->left)
+							val->parent->left = val->left;
+						else
+							val->parent->right = val->left;
+					}
+					else
+					{
+						if (val->parent->right == val)
+							val->parent->right = NULL;
+						else
+							val->parent->left = NULL;
+					}
+				}
+				else
+				{
+					if (val->right)
+					{
+						val->right->parent = val->parent;
+						if (val == val->parent->left)
+							val->parent->left = val->right;
+						else
+							val->parent->right = val->right;
+					}
+					else
+					{
+						if (val->parent->left == val)
+							val->parent->left = NULL;
+						else
+							val->parent->right = NULL;
+					}
+				}
+				val->parent = curr->parent;
+				val->left = curr->left;
+				val->right = curr->right;
+				if (curr->parent)
+				{
+					if (curr->parent->left == curr)
+						curr->parent->left = val;
+					else
+						curr->parent->right = val;
+				}
+				else
+				{
+					_bst = val;
+				}
+				if (curr->left)
+					curr->left->parent = val;
+				if (curr->right)
+					curr->right->parent = val;
+				curr->left = NULL;
+				curr->right = NULL;
+				curr->parent = NULL;
 			}
 
 			void _deleteNode(_node *bst)
@@ -263,23 +330,36 @@ namespace ft
 				if (!bst)
 					return ;
 				if (_isLeaf(bst))
+				{
 					_clear(bst);
+				}
 				else if (!_isLeaf(bst))
 				{
 					if (bst->left)
+					{
 						tmp = maxNode(bst->left);
+						changeData(bst, tmp, 1);
+					}
 					else if (bst->right)
-						tmp = minNode(bst->right); 
-					changeData(bst, tmp->data);
-					_deleteNode(tmp);
+					{
+						tmp = minNode(bst->right);
+						changeData(bst, tmp, 2);
+					}
+					_deleteNode(bst);
 				}
 			}
 
 			size_type _erase(const key_type &key)
 			{
 				_node*	found = _findNode(key);
-				if (!_bst || !found)
+				if (!found)
+				{
 					return (0);
+				}
+				if (!_bst)
+				{
+					return (0);
+				}
 				_deleteNode(found);
 				return (1);
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:13 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/02/16 17:19:21 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:48:23 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ namespace ft
 			template<typename TypeKey, bool TypeIsConst>
 			BST_iter(BST_iter<TypeKey, TypeIsConst> const & other) : _p(other.getPtr()), _first(other.getf()), _last(other.getl()){
 			}
+
 			node_ptr getPtr() const
 			{
 				return (this->_p);
@@ -159,17 +160,19 @@ namespace ft
 			{
 				return (static_cast<node_ptr>(_p)->data);
 			}
-
-			bool operator==(const BST_iter & src)
-			{
-				return (this->_p == src._p);
-			}
-
-			bool operator!=(const BST_iter & src)
-			{
-				return (this->_p != src._p);
-			}
 	};
+
+	template<typename A, typename B, bool T, bool H>
+	bool operator==(const BST_iter<A, T> & lhs, const BST_iter<B, H> & rhs)
+	{
+		return &(*lhs) == &(*rhs);
+	}
+
+	template<typename A, typename B, bool T, bool H>
+	bool operator!=(const BST_iter<A, T> & lhs, const BST_iter<B, H> & rhs) 
+	{
+		return &(*lhs) != &(*rhs);
+	}
 	
 	template <typename Iterator>
 	class reverse_BST_iter
@@ -251,20 +254,18 @@ namespace ft
 			++(this->_base);
 			return (tmp);
 		}
-		
-
 	};
 
-	template <class Iterator>
-	bool operator== (const reverse_BST_iter<Iterator>& lhs, const reverse_BST_iter<Iterator>& rhs)
+	template<typename A, typename B>
+	bool operator==(const reverse_BST_iter<A> & lhs, const reverse_BST_iter<B> & rhs)
 	{
-		return (lhs.base() == rhs.base());
+		return &(*lhs) == &(*rhs);
 	}
 
-	template <class Iterator>
-	bool operator!= (const reverse_BST_iter<Iterator>& lhs, const reverse_BST_iter<Iterator>& rhs)
+	template<typename A, typename B>
+	bool operator!=(const reverse_BST_iter<A> & lhs, const reverse_BST_iter<B> & rhs) 
 	{
-		return !(lhs.base() == rhs.base());
+		return &(*lhs) != &(*rhs);
 	}
 }
 

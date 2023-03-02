@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           *
+/*   By: jbartkow <jbartkow@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:32:27 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/02/16 17:18:38 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:50:16 by jbartkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ namespace ft
 		pair<iterator, bool> insert(const value_type &value)
 		{
 			iterator find = this->_bst._findNode(value.first);
-			if (find != NULL)
+			if (find.getPtr() != NULL)
 			{
 				return (ft::make_pair(find, false));
 			}
@@ -225,7 +225,7 @@ namespace ft
 		iterator insert(iterator position, const value_type &value)
 		{
 			position = this->_bst._findNode(value.first);
-			if (position != NULL)
+			if (position.getPtr() != NULL)
 			{
 				return (position);
 			}
@@ -246,13 +246,13 @@ namespace ft
 
 		void erase(iterator first, iterator last)
 		{
-			key_type key;
-			int i = ft::distance(first, last);
-			last = first;
-			for (int j = 0; j < i; j++)
+			iterator tmp = first;
+			iterator t = first;
+			while (tmp != last)
 			{
-				key = first->first;
-				erase(key);
+				tmp++;
+				erase(t->first);
+				t = tmp;
 			}
 		}
 
@@ -286,7 +286,7 @@ namespace ft
 		iterator find(const key_type &key)
 		{
 			iterator res = _bst._findNode(key);
-			if (res != NULL)
+			if (res.getPtr() != NULL)
 				return (res);
 			else
 				return (iterator(end()));
@@ -295,7 +295,7 @@ namespace ft
 		const_iterator find(const key_type &key) const
 		{
 			const_iterator res = _bst._findNode(key);
-			if (res != NULL)
+			if (res.getPtr() != NULL)
 				return (res);
 			else
 				return (const_iterator(end()));
@@ -387,7 +387,11 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
-		return !(rhs < lhs);
+		if (!(rhs < lhs))
+			return (true);
+		if (rhs == lhs)
+			return (true);
+		return (false);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -399,7 +403,11 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs)
 	{
-		return !(lhs < rhs);
+		if ((rhs < lhs))
+			return (true);
+		if (rhs == lhs)
+			return (true);
+		return (false);
 	}
 }
 

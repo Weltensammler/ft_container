@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschende <bschende@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 16:33:21 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/02/16 17:18:49 by jbartkow         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:14:14 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,33 @@ int main(void)
 				  << std::endl;
 		ft::map<int, std::string> mp;
 
-		mp[4] = "This";
+		mp[0] = "This";
 		mp[1] = "is";
-		mp[6] = "an";
-		
-		mp.insert(ft::make_pair(9, "duck"));
-		
-	}
-}
-		// mp[3] = "entry";
+		mp[2] = "an";
+		mp[3] = "entry";
 
-// 		std::cout << "Insertion and printing using operator[]" << std::endl;
-// 		std::cout << " - " << mp[0] << std::endl;
-// 		std::cout << " - " << mp[1] << std::endl;
-// 		std::cout << " - " << mp[2] << std::endl;
-// 		std::cout << " - " << mp[3] << std::endl;
+		std::cout << "Insertion and printing using operator[]" << std::endl;
+		std::cout << " - " << mp[0] << std::endl;
+		std::cout << " - " << mp[1] << std::endl;
+		std::cout << " - " << mp[2] << std::endl;
+		std::cout << " - " << mp[3] << std::endl;
 
-// 		std::cout << "Printing using iterators (from begin to end)" << std::endl;
-// 		ft::map<int, std::string>::iterator it = mp.begin();
-// 		for (; it != mp.end(); it++)
-// 			std::cout << " - " << it->second << std::endl;
+		std::cout << "Printing using iterators (from begin to end)" << std::endl;
+		ft::map<int, std::string>::iterator it = mp.begin();
+		for (; it != mp.end(); it++)
+			std::cout << " - " << it->second << std::endl;
 
-// 		std::cout << "Printing using iterators (from end to begin)" << std::endl;
-// 		it = --(mp.end());
-// 		for (; it != mp.begin(); it--)
-// 			std::cout << " - " << it->second << std::endl;
-// 		std::cout << " - " << it->second << std::endl;
+		std::cout << "Printing using iterators (from end to begin)" << std::endl;
+		it = --(mp.end());
+		for (; it != mp.begin(); it--)
+			std::cout << " - " << it->second << std::endl;
+		std::cout << " - " << it->second << std::endl;
 
-// 		std::cout << "Printing from a new map after copying" << std::endl;
-// 		ft::map<int, std::string> mp2 = mp;
-// 		it = mp2.begin();
-// 		for (; it != mp2.end(); it++)
-// 			std::cout << " - " << it->second << std::endl;
+		std::cout << "Printing from a new map after copying" << std::endl;
+		ft::map<int, std::string> mp2 = mp;
+		it = mp2.begin();
+		for (; it != mp2.end(); it++)
+			std::cout << " - " << it->second << std::endl;
 
 		std::cout << "Map size" << std::endl;
 		std::cout << " - " << mp.size() << std::endl;
@@ -265,21 +260,21 @@ int main(void)
 	for (; it2 != vct2.end(); it2++)
 		std::cout << " - " << *it2 << std::endl;
 	vct2.insert(vct2.begin(), 2, 21);
-	std::cout << "Vector size" << std::endl;
-	std::cout << " - " << vct2.size() << std::endl;
-	std::cout << "Vector capacity" << std::endl;
-	std::cout << " - " << vct2.capacity() << std::endl;
-	it2 = vct2.begin();
-	for (; it2 != vct2.end(); it2++)
-		std::cout << " - " << *it2 << std::endl;
-	vct2.insert(vct2.end() - 2, 42);
-	std::cout << "Vector size" << std::endl;
-	std::cout << " - " << vct2.size() << std::endl;
-	std::cout << "Vector capacity" << std::endl;
-	std::cout << " - " << vct2.capacity() << std::endl;
-	it2 = vct2.begin();
-	for (; it2 != vct2.end(); it2++)
-		std::cout << " - " << *it2 << std::endl;
+	// std::cout << "Vector size" << std::endl;
+	// std::cout << " - " << vct2.size() << std::endl;
+	// std::cout << "Vector capacity" << std::endl;
+	// std::cout << " - " << vct2.capacity() << std::endl;
+	// it2 = vct2.begin();
+	// for (; it2 != vct2.end(); it2++)
+	// 	std::cout << " - " << *it2 << std::endl;
+	// vct2.insert(vct2.end() - 2, 42);
+	// std::cout << "Vector size" << std::endl;
+	// std::cout << " - " << vct2.size() << std::endl;
+	// std::cout << "Vector capacity" << std::endl;
+	// std::cout << " - " << vct2.capacity() << std::endl;
+	// it2 = vct2.begin();
+	// for (; it2 != vct2.end(); it2++)
+	// 	std::cout << " - " << *it2 << std::endl;
 	std::cout << "----std insert test ----" << std::endl;
 	std::vector<int> vct3;
 	std::vector<int>::iterator it3 = vct3.begin();
@@ -421,15 +416,15 @@ int main(void)
 		std::cout << " - " << *it << std::endl
 				  << std::endl;
 
-// 	std::cout << "#######################################################" << std::endl;
-// 	std::cout << "#----------------------- STACK -----------------------#" << std::endl;
-// #ifdef STD
-// 	std::cout << "#------------------------ STL ------------------------#" << std::endl;
-// #else
-// 	std::cout << "#------------------------ FT  ------------------------#" << std::endl;
-// #endif
-// 	std::cout << "#######################################################" << std::endl
-// 			  << std::endl;
+	std::cout << "#######################################################" << std::endl;
+	std::cout << "#----------------------- STACK -----------------------#" << std::endl;
+#ifdef STD
+	std::cout << "#------------------------ STL ------------------------#" << std::endl;
+#else
+	std::cout << "#------------------------ FT  ------------------------#" << std::endl;
+#endif
+	std::cout << "#######################################################" << std::endl
+			  << std::endl;
 
 	ft::stack<int> vst;
 	std::cout << "Is new stack empty:" << std::endl;
@@ -537,5 +532,4 @@ int main(void)
 	std::cout << " - " << dst.empty() << std::endl
 			  << std::endl;
 }
-
 
