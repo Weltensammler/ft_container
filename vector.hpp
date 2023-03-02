@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:32:44 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/03/02 13:34:29 by ben              ###   ########.fr       */
+/*   Created: 2023/03/02 13:56:36 by ben               #+#    #+#             */
+/*   Updated: 2023/03/02 13:57:22 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -535,10 +535,10 @@ namespace ft
 				if (this->_capacity == 0)
 					 allocation_size = n;
 				else
-					// allocation_size = this->_capacity;
+					// allocation_size = this->_capacity; //mac os
 					allocation_size = (this->size() + n);
-				// while (allocation_size < (this->size() + n))
-				// 	allocation_size = allocation_size * 2;
+				// while (allocation_size < (this->size() + n)) //mac os
+				// 	allocation_size = allocation_size * 2; //mac os
 				pointer new_start = this->_alloc.allocate(allocation_size);
 				pointer new_end = new_start + this->size() + n;
 				for (int i = 0; i < &(*position) - this->_container; i++)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ben <ben@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 16:33:21 by jbartkow          #+#    #+#             */
-/*   Updated: 2023/03/01 20:14:14 by ben              ###   ########.fr       */
+/*   Created: 2023/03/02 13:55:57 by ben               #+#    #+#             */
+/*   Updated: 2023/03/02 13:59:41 by ben              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,22 +259,6 @@ int main(void)
 	it2 = vct2.begin();
 	for (; it2 != vct2.end(); it2++)
 		std::cout << " - " << *it2 << std::endl;
-	vct2.insert(vct2.begin(), 2, 21);
-	// std::cout << "Vector size" << std::endl;
-	// std::cout << " - " << vct2.size() << std::endl;
-	// std::cout << "Vector capacity" << std::endl;
-	// std::cout << " - " << vct2.capacity() << std::endl;
-	// it2 = vct2.begin();
-	// for (; it2 != vct2.end(); it2++)
-	// 	std::cout << " - " << *it2 << std::endl;
-	// vct2.insert(vct2.end() - 2, 42);
-	// std::cout << "Vector size" << std::endl;
-	// std::cout << " - " << vct2.size() << std::endl;
-	// std::cout << "Vector capacity" << std::endl;
-	// std::cout << " - " << vct2.capacity() << std::endl;
-	// it2 = vct2.begin();
-	// for (; it2 != vct2.end(); it2++)
-	// 	std::cout << " - " << *it2 << std::endl;
 	std::cout << "----std insert test ----" << std::endl;
 	std::vector<int> vct3;
 	std::vector<int>::iterator it3 = vct3.begin();
